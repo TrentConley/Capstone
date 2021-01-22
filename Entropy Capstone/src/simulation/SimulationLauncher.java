@@ -16,7 +16,6 @@ public class SimulationLauncher {
 	{
 		System.out.println("Hello, World");
 		// TODO Auto-generated method stub
-
 	}
 
 }
