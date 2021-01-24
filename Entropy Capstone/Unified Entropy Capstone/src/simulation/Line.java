@@ -12,7 +12,11 @@ public class Line
 		yIntercept = yInterceptIn;
 	}
 	
-//	public double find
+	public double findDistanceClosestApproach(Coordinates c)
+	{
+		
+		return 0;
+	}
 	
 	public double getSlope()
 	{

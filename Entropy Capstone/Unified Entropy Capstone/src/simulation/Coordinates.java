@@ -11,4 +11,27 @@ public class Coordinates
 		x = xin;
 		y = yin;
 	}
+	
+	public double getX()
+	{
+		return x;
+	}
+	
+	public double getY()
+	{
+		return y;
+	}
+	
+	public void setX(double xIn)
+	{
+		x = xIn;
+	}
+	
+	public void setY(double yIn)
+	{
+		y = yIn;
+	}
+	
+	
 }
+
