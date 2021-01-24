@@ -109,8 +109,9 @@ public class Atom
 //		using two clone because will hold address that point to the heap so I can 
 //		modify both atoms in another function and have it return something while not 
 //		messing with the originals. 
-		Atom clone_movingAtom = new Atom(xpos, ypos, magnitude, theta);
-		Atom clone_stationaryAtom = new Atom(a.get_xpos(), a.get_ypos(), a.get_magnitude(), a.get_theta());
+		Atom clone_movingAtom = new Atom(xpos, ypos, magnitude, theta, radius);
+		Atom clone_stationaryAtom = new Atom(a.get_xpos(), a.get_ypos(), a.get_magnitude(), 
+				a.get_theta(), a.get_radius());
 		double centerx = a.get_xpos();
 	}
 	
@@ -156,6 +157,11 @@ public class Atom
 	{
 		return theta;
 	}
+	
+	public double get_radius() 
+	{
+		return radius;
+	}
 
 	
 
@@ -164,9 +170,7 @@ public class Atom
 	public void set_xpos(double xposin)
 
 	{
-
 		xpos = xposin;
-
 	}
 
 	
@@ -191,6 +195,11 @@ public class Atom
 
 	{
 		theta = thetain;
+	}
+	
+	public void set_radius(double radiusin)
+	{
+		radius = radiusin;
 	}
 
 
