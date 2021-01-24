@@ -113,6 +113,7 @@ public class Atom
 		Atom clone_stationaryAtom = new Atom(a.get_xpos(), a.get_ypos(), a.get_magnitude(), 
 				a.get_theta(), a.get_radius());
 		double centerx = a.get_xpos();
+		return 0;
 	}
 	
 	public void make_relative(Atom mov, Atom stat)
