@@ -106,14 +106,18 @@ public class Atom
 	
 	public double get_time_collision(Atom a)
 	{
-		Atom clone movingAtom = new Atom(xpos, ypos, magnitude, theta);
+//		using two clone because will hold address that point to the heap so I can 
+//		modify both atoms in another function and have it return something while not 
+//		messing with the originals. 
+		Atom clone_movingAtom = new Atom(xpos, ypos, magnitude, theta);
+		Atom clone_stationaryAtom = new Atom(a.get_xpos(), a.get_ypos(), a.get_magnitude(), a.get_theta());
 		double centerx = a.get_xpos();
 	}
 	
-	public Atom make_relative(Atom a)
+	public void make_relative(Atom mov, Atom stat)
 	{
-		Atom B = new Atom(a.get_xpos(), a.get_ypos(), a.get_magnitude(), a.get_theta());
-		return B;
+//		going to make one atom stationary relative to the other. 
+		return;
 	}
 /*
  * For the checking (if they will collide) part, I think we can do it by simply 

@@ -2,6 +2,7 @@
  * 
  */
 package simulation;
+import Atom;
 
 /**
  * @author trentconley
