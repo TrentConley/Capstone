@@ -2,7 +2,6 @@
  * 
  */
 package simulation;
-import Atom;
 
 /**
  * @author trentconley
@@ -18,6 +17,7 @@ public class SimulationLauncher
 	public static void main(String[] args) 
 	{
 		System.out.println("Hello, World");
+		Atom my_atom = new Atom(0,0,0,0,0);
 		// TODO Auto-generated method stub
 	}
 
