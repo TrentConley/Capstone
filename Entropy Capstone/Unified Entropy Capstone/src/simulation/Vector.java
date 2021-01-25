@@ -62,6 +62,6 @@ public class Vector
 	
 	public String toString()
 	{
-		return "magnitude is " + Double.toString(magnitude) + "";
+		return "magnitude is " + Double.toString(magnitude) + " theta is " + Double.toString(theta);
 	}
 }
