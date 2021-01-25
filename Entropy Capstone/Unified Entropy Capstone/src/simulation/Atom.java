@@ -5,17 +5,12 @@ package simulation;
  *
  */
 //This is the class where I will design the attributes of each atom, and keep track of their
-
-//position while they move in the simulation. I'm also using the snake style because I'm used
-
-//to writing in python. 
+//position while they move in the simulation. 
 
 public class Atom 
-
 {
-	private Coordinates cordinates;
-	private double xpos;
-	private double ypos;
+	private Coordinates c;
+	private Vector v;
 	private double magnitude;
 	private double theta;
 	private double radius; 
@@ -23,32 +18,31 @@ public class Atom
 //	private double size = 0; I will ignore the size of the atom for now because the math will
 //	get really hard if I consider the atom as a sphere, I eventually will though. 
 //	This is a constructor that will initiate all of the class scope variables.
-
-	public Atom (double xposin, double yposin, double magnitudein, double thetain, double radiusin)
+	public Atom (Coordinates cIn, double magnitudein, double thetain, double radiusin)
 	{	
-		xpos = xposin;
-		ypos = yposin;
+//		creating copy will prevent errors from mixing addresses in the heap. 
+		Coordinates copyC = new Coordinates(cIn.getX(), cIn.getY());
+		c = copyC;
 		magnitude = magnitudein;
 		theta = thetain;
 		radius = radiusin;
 	}
 
-	
 
-//	This method will return the collision time of the atom to a line
+//	This method will return the collision time of the atom to a Vector
 
-//	the line will be in the form y = m * x + b
+//	the Vector will be in the form y = m * x + b
 
-//	I am just calculating the intersection point of two lines.
-
+//	I am just calculating the intersection point of two Vectors.
 
 
-	public double collision_line(double m1, double b1)
+
+	public double collisionVector(double m1, double b1)
 	{
-//		2 at the end of the letter refers to the atom, 1 refers to the boundary line
+//		2 at the end of the letter refers to the atom, 1 refers to the boundary Vector
 //		this function will be useful when computing the collisions between spheres I think.
 		double m2 = magnitude * Math.tan(theta); 
-		double b2 = m2 * (-xpos) + ypos;
+		double b2 = m2 * (-c.getX()) + c.getY();
 		double a = 0;
 		double xcolpos = (b2-b1)/(m1-m2);
 		double ycolpos = m1 * xcolpos + b1;
@@ -60,14 +54,14 @@ public class Atom
 * 
 */
 	}
-//	for vertical or horizontal lines
-	public double collision_line(boolean vert_horiz, double x,  double y)
+//	for vertical or horizontal Vectors
+	public double collisionVector(boolean vert_horiz, double x,  double y)
 	{
 		if (vert_horiz)
 		{
 //			This will assume that the user inputs the double x as the 
 //			slope and the double y as the y intercept
-			return collision_line(x, y);
+			return collisionVector(x, y);
 		}
 		if (x == -1)
 		{
@@ -79,16 +73,16 @@ public class Atom
 			}
 //			 we are returning the time time until collision, also all the particles will be 
 //			inside the box
-			return (x-xpos) / (magnitude * Math.cos(theta));
+			return (x-c.getX()) / (magnitude * Math.cos(theta));
 		}
-		return (y - ypos)/ (magnitude * Math.sin(theta)); // numerator is distance to travel,
+		return (y - c.getY())/ (magnitude * Math.sin(theta)); // numerator is distance to travel,
 		//Denominator is the rate at which it is changing, thereby giving the seconds until
 		//collision
 	}
 	/*
 	 * returns the x velocity component of the atom
 	 */
-	public double get_xvel()
+	public double getXvel()
 	{
 		return Math.cos(theta) * magnitude;
 	}
@@ -107,7 +101,7 @@ public class Atom
 //		modify both atoms in another function and have it return something while not 
 //		messing with the originals. 
 		Atom clone_movingAtom = new Atom(xpos, ypos, magnitude, theta, radius);
-		Atom clone_stationaryAtom = new Atom(a.get_xpos(), a.get_ypos(), a.get_magnitude(), 
+		Atom clone_stationaryAtom = new Atom(a.getCoordinates(),  a.get_magnitude(), 
 				a.get_theta(), a.get_radius());
 		double centerx = a.get_xpos();
 		return 0;
@@ -120,7 +114,7 @@ public class Atom
 	}
 /*
  * For the checking (if they will collide) part, I think we can do it by simply 
- * calculating the shortest distance between the first circle's velocity line, 
+ * calculating the shortest distance between the first circle's velocity Vector, 
  * and the second circle's center, and checking if the distance is greater than R1+R2, 
  * so the only thing remains is to find the collision point.
  */
@@ -129,34 +123,26 @@ public class Atom
 	
 
 //	These four methods will allow the me to get all of the class scope variables.
-	public double get_xpos()
-
+	public Coordinates getCoordinates()
 	{
-		return xpos;
+		Coordinates copyC = new Coordinates(c.getX(), c.getY());
+		return copyC;
 	}
-
 	
 
-	public double get_ypos()
-	{
-		return ypos;
-	}
-
-	
-
-	public double get_magnitude()
+	public double getMagnitude()
 	{
 		return magnitude;
 	}
 
 
-	public double get_theta()
+	public double getTheta()
 
 	{
 		return theta;
 	}
 	
-	public double get_radius() 
+	public double getRadius() 
 	{
 		return radius;
 	}
@@ -165,19 +151,17 @@ public class Atom
 
 //	These following four methods will allow me to set the values of the class scope variables
 
-	public void setCoordinates(Coordinates c)
+	public void setCoordinates(Coordinates cIn)
 	{
 		
 //		Setting something equivalent to an address that you are using in the heap can cause 
-//		erros later on in the future, but I will leave it for now. 
-//		Coordinates copyC = new Coordinates(c.getX(), c.getY());
-		cordinates = c;
-		return;
-		
+//		errors later on in the future, but I will leave it for now. 
+		Coordinates copyC = new Coordinates(cIn.getX(), cIn.getY());
+		c = copyC;	
 	}
-
 	
-
+	
+	public void setVector()
 	public void set_magnitude(double magnitudein)
 
 	{
