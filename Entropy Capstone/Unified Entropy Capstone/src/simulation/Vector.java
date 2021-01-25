@@ -6,10 +6,10 @@ public class Vector
 	private double magnitude;
 	private double theta;
 	
-	public Vector (double magnitudeIn, double yInterceptIn)
+	public Vector (double magnitudeIn, double thetaIn)
 	{
 		magnitude = magnitudeIn;
-		theta = yInterceptIn;
+		theta = thetaIn;
 	}
 	
 //	returns the closest distance from this Line to the coordinates C
@@ -27,21 +27,21 @@ public class Vector
 	
 	public double getMagnitude()
 	{
-		return magnitude;
+		return this.magnitude;
 	}
 	
 	public double getTheta() 
 	{
-		return theta;
+		return this.theta;
 	}
 	
 	public void setMagnitude(double magnitudeIn)
 	{
-		magnitude = magnitudeIn;
+		this.magnitude = magnitudeIn;
 	}
 	
-	public void setYIntercept(double yInterceptIn)
+	public void setTheta(double thetaIn)
 	{
-		theta = yInterceptIn;
+		this.theta = thetaIn;
 	}
 }
