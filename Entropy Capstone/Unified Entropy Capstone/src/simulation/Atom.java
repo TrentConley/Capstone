@@ -11,21 +11,17 @@ public class Atom
 {
 	private Coordinates c;
 	private Vector v;
-	private double magnitude;
-	private double theta;
 	private double radius; 
 
 //	private double size = 0; I will ignore the size of the atom for now because the math will
 //	get really hard if I consider the atom as a sphere, I eventually will though. 
 //	This is a constructor that will initiate all of the class scope variables.
-	public Atom (Coordinates cIn, Vector vIn, double magnitudein, double thetain, double radiusin)
+	public Atom (Coordinates cIn, Vector vIn, double radiusin)
 	{	
 //		creating copy will prevent errors from mixing addresses in the heap. 
 		Coordinates copyC = new Coordinates(cIn.getX(), cIn.getY());
 		c = copyC;
 		Vector copyV = new Vector(vIn.getMagnitude(), vIn.getTheta());
-		magnitude = magnitudein;
-		theta = thetain;
 		radius = radiusin;
 	}
 
@@ -157,25 +153,16 @@ public class Atom
 		
 //		Setting something equivalent to an address that you are using in the heap can cause 
 //		errors later on in the future, but I will leave it for now. 
-		Coordinates copyC = new Coordinates(cIn.getX(), cIn.getY());
-		c = copyC;	
+		c = new Coordinates(cIn.getX(), cIn.getY());
 	}
 	
 	
-	public void setVector()
-	public void set_magnitude(double magnitudein)
-
+	public void setVector(Vector vIn)
 	{
-		magnitude = magnitudein;
+		
+		this.v = new Vector(vIn.getMagnitude(), vIn.getTheta());
 	}
 
-	
-
-	public void set_theta(double thetain)
-
-	{
-		theta = thetain;
-	}
 	
 	public void set_radius(double radiusin)
 	{

@@ -32,6 +32,10 @@ public class Coordinates
 		y = yIn;
 	}
 	
+	public String toString()
+	{
+		return "X coordinate = " + Double.toString(x) + " y coordinate = " + Double.toString(y);
+	}
 	
 }
 
