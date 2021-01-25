@@ -13,7 +13,7 @@ package simulation;
 public class Atom 
 
 {
-
+	private Coordinates cordinates;
 	private double xpos;
 	private double ypos;
 	private double magnitude;
@@ -165,18 +165,15 @@ public class Atom
 
 //	These following four methods will allow me to set the values of the class scope variables
 
-	public void set_xpos(double xposin)
-
+	public void setCoordinates(Coordinates c)
 	{
-		xpos = xposin;
-	}
-
-	
-
-	public void set_ypos(double yposin)
-
-	{
-		ypos = yposin;
+		
+//		Setting something equivalent to an address that you are using in the heap can cause 
+//		erros later on in the future, but I will leave it for now. 
+//		Coordinates copyC = new Coordinates(c.getX(), c.getY());
+		cordinates = c;
+		return;
+		
 	}
 
 	
