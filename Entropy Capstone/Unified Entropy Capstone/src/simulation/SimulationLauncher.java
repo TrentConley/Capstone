@@ -17,7 +17,7 @@ public class SimulationLauncher
 	public static void main(String[] args) 
 	{
 		System.out.println("Hello, World");
-		Atom my_atom = new Atom(0,0,0,0,0);
+		Atom my_atom = new Atom(new Coordinates(0, 0), new Vector(0, 0), 0);
 		// TODO Auto-generated method stub
 	}
 
