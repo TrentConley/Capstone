@@ -12,10 +12,17 @@ public class Line
 		yIntercept = yInterceptIn;
 	}
 	
+//	returns the closest distance from this Line to the coordinates C
 	public double findDistanceClosestApproach(Coordinates c)
 	{
-		
+		Line perp = createPerpendicular(c);
 		return 0;
+	}
+	
+	private Line createPerpendicular(Coordinates c) 
+	{
+		
+		return this;
 	}
 	
 	public double getSlope()
