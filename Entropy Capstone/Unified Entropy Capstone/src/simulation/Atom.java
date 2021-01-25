@@ -70,7 +70,7 @@ public class Atom
 			}
 //			 we are returning the time time until collision, also all the particles will be 
 //			inside the box
-			return (x-c.getX()) / (magnitude * Math.cos(theta));
+			return (x-c.getX()) / (v.getMagnitude() * Math.cos(v.getTheta()));
 		}
 		return (y - c.getY())/ (magnitude * Math.sin(theta)); // numerator is distance to travel,
 		//Denominator is the rate at which it is changing, thereby giving the seconds until
