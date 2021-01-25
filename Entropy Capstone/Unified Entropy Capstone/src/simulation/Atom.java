@@ -33,7 +33,7 @@ public class Atom
 //	I am just calculating the intersection point of two Vectors.
 
 
-
+/*
 	public double collisionVector(double m1, double b1)
 	{
 //		2 at the end of the letter refers to the atom, 1 refers to the boundary Vector
@@ -44,14 +44,20 @@ public class Atom
 		double xcolpos = (b2-b1)/(m1-m2);
 		double ycolpos = m1 * xcolpos + b1;
 		return 0;
-/*		y = m * x + b
+*		y = m * x + b
 *		y  = m (x - x1)+ y1
 *		y = m2 (-x2) + y2 because the x value is 0 on the y intercept and this is equal to b2
 *		and if we have the mx+b form for the other, we can set them equal to each other
 * 
-*/
+
+
 	}
+*/
+
+
 //	for vertical or horizontal Vectors
+	
+	/*
 	public double collisionVector(boolean vert_horiz, double x,  double y)
 	{
 		if (vert_horiz)
@@ -72,28 +78,20 @@ public class Atom
 //			inside the box
 			return (x-c.getX()) / (v.getMagnitude() * Math.cos(v.getTheta()));
 		}
-		return (y - c.getY())/ (magnitude * Math.sin(theta)); // numerator is distance to travel,
+		return (y - c.getY())/ (v.getMagnitude() * Math.sin(theta)); // numerator is distance to travel,
 		//Denominator is the rate at which it is changing, thereby giving the seconds until
 		//collision
 	}
+	*/
+
 	/*
 	 * returns the x velocity component of the atom
 	 */
-	public double getXvel()
-	{
-		return Math.cos(theta) * magnitude;
-	}
 	
 	/*
-	 * gets the y velocity component of the atom
-	 */
-	public double get_yvel()
+	public double getTimeCollision(Atom a)
 	{
-		return Math.sin(theta) * magnitude;
-	}
-	
-	public double get_time_collision(Atom a)
-	{
+		
 //		using two clone because will hold address that point to the heap so I can 
 //		modify both atoms in another function and have it return something while not 
 //		messing with the originals. 
@@ -103,6 +101,7 @@ public class Atom
 		double centerx = a.get_xpos();
 		return 0;
 	}
+	*/
 	
 	public void make_relative(Atom mov, Atom stat)
 	{
@@ -127,16 +126,10 @@ public class Atom
 	}
 	
 
-	public double getMagnitude()
+	public Vector getVector()
 	{
-		return magnitude;
-	}
-
-
-	public double getTheta()
-
-	{
-		return theta;
+		return new Vector(this.v.getMagnitude(), this.v.getTheta());
+	
 	}
 	
 	public double getRadius() 
@@ -174,7 +167,7 @@ public class Atom
 
 	public String toString()
 	{
-		return "x pos = " + Double.toString(xpos) + ", y pos = " + Double.toString(ypos) + 
-				", magnitude = " + Double.toString(magnitude) + ", theta = " + Double.toString(theta);
+		return "Coordinates Information: " + this.c.toString() + 
+				" Vector Information: " + this.v.toString();
 	}
 }
