@@ -21,6 +21,7 @@ public class SimulationLauncher
 		Coordinates myCoords = new Coordinates(0,0);
 		Atom myAtom = new Atom(myCoords, myVector, 0);
 		System.out.println(myAtom);
+		
 		// TODO Auto-generated method stub
 	}
 
