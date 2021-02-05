@@ -1,5 +1,5 @@
-
 package simulation;
+import java.util.*;
 
 /**
  * @author trentconley
