@@ -7,23 +7,21 @@ package simulation;
 //This is the class where I will design the attributes of each atom, and keep track of their
 //position while they move in the simulation. 
 
-public class Atom 
+public abstract class Atom 
 {
 	private Coordinates c;
 	private Vector v;
-	private double radius; 
 
 //	private double size = 0; I will ignore the size of the atom for now because the math will
 //	get really hard if I consider the atom as a sphere, I eventually will though. 
 //	This is a constructor that will initiate all of the class scope variables.
-	public Atom (Coordinates cIn, Vector vIn, double radiusin)
+	public Atom (Coordinates cIn, Vector vIn)
 	{	
 //		creating copy will prevent errors from mixing addresses in the heap. 
 		Coordinates copyC = new Coordinates(cIn.getX(), cIn.getY());
 		c = copyC;
 		Vector copyV = new Vector(vIn.getMagnitude(), vIn.getTheta());
 		v = copyV;
-		radius = radiusin;
 	}
 
 
@@ -130,13 +128,6 @@ public class Atom
 		return new Vector(this.v.getMagnitude(), this.v.getTheta());
 	
 	}
-	
-	public double getRadius() 
-	{
-		return radius;
-	}
-
-	
 
 //	These following four methods will allow me to set the values of the class scope variables
 
@@ -154,13 +145,6 @@ public class Atom
 		
 		this.v = new Vector(vIn.getMagnitude(), vIn.getTheta());
 	}
-
-	
-	public void set_radius(double radiusin)
-	{
-		radius = radiusin;
-	}
-
 
 //	Always include a toString method even if it's boring!
 
