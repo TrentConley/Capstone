@@ -20,24 +20,25 @@ public class SimulationLauncher
 		System.out.println("Hello, World");
 		Vector myVector = new Vector(0,0);
 		Coordinates myCoords = new Coordinates(0,0);
-		Atom myAtom = new Atom(myCoords, myVector, 0);
+		Atom myAtom = new Helium(myCoords, myVector);
 		System.out.println(myAtom);
+		Atom[] myAtoms = createHelium();
+		
 		
 		// TODO Auto-generated method stub
 	}
 	
-	public Atom[] createAtoms()
+	public static Helium[] createHelium()
 	{
-		Atom[] allAtoms = new Atom[NUM_ATOMS];
+		Helium[] allAtoms = new Helium[NUM_ATOMS];
 		for (int i = 0; i < NUM_ATOMS; i++)
 		{
 			allAtoms[i] = createAtomFollowingDistribution();
-		}
-		 
+		} 
 		return allAtoms;
 	}
 	
-	public Atom createAtomFollowingDistribution()
+	private static Helium createAtomFollowingDistribution()
 	{
 		
 		return null;

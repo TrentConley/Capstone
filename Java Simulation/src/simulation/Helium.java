@@ -2,8 +2,11 @@ package simulation;
 
 public class Helium extends Atom
 {
-	private static final double MASS = 0;
-	private static final double RADIUS = 0;
+//	mass is in au.
+	private static final double MASS = 4.002602;
+	
+//	radius is in pm
+	private static final double RADIUS = 140;
 	
 	public Helium(Coordinates cIn, Vector vIn) 
 	{
