@@ -8,6 +8,7 @@ package simulation;
  */
 public class SimulationLauncher 
 	{
+	public static final int NUM_ATOMS = 10;
 
 	/**
 	 * @param args
@@ -22,6 +23,17 @@ public class SimulationLauncher
 		
 		// TODO Auto-generated method stub
 	}
+	
+	public Atom[] createAtoms()
+	{
+		Atom[] ar = new Atom[NUM_ATOMS]; 
+		return ar;
+	}
+	
+//	public Atom getAtom()
+	
+
+			
 	
 }
 
