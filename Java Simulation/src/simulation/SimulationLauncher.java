@@ -9,6 +9,8 @@ package simulation;
 public class SimulationLauncher 
 	{
 	public static final int NUM_ATOMS = 10;
+	public static final double TEMPERATURE_SYSTEM = 273;
+	
 
 	/**
 	 * @param args
@@ -26,11 +28,20 @@ public class SimulationLauncher
 	
 	public Atom[] createAtoms()
 	{
-		Atom[] ar = new Atom[NUM_ATOMS]; 
-		return ar;
+		Atom[] allAtoms = new Atom[NUM_ATOMS];
+		for (int i = 0; i < NUM_ATOMS; i++)
+		{
+			allAtoms[i] = createAtomFollowingDistribution();
+		}
+		 
+		return allAtoms;
 	}
 	
-//	public Atom getAtom()
+	public Atom createAtomFollowingDistribution()
+	{
+		
+		return null;
+	}
 	
 
 			
