@@ -50,10 +50,15 @@ public class SimulationLauncher
 //		velocity equals (from solving equations from the link at the top of the file) 
 //		(3kT/m)^(1/2) where k is the 
 //		k = 1.38064852 × 10^-23 m^2 kg s^-2 K-1
-		double velocity = new BigDouble(Math.sqrt(
-				k.multiply(STARTING_TEMPERATURE_SYSTEM).multiply(3)));
-		double theta = 0;
-		double x = new BigDecimal(0.0);
+		BigDecimal three = new BigDecimal("3,0"); 
+		BigDecimal mass = new BigDecimal (Helium.MASS);
+		BigDecimal ktemp = k.multiply(STARTING_TEMPERATURE_SYSTEM);
+		BigDecimal ktempthree = ktemp.multiply(three);
+		BigDecimal ktempthreemass = ktempthree.divide(mass);
+		BigDecimal velocity = ktempthreemass.sqrt(null);
+//		I created the lines above to be redundant in the calculation of the velocity. 
+		double theta = Math.random()*2*Math.PI;
+		double x = 0;
 		double y = 0;
 		Coordinates c = new Coordinates (x,y);
 		Vector v = new Vector(velocity, theta);
@@ -65,8 +70,14 @@ public class SimulationLauncher
 	{
 		for (int i = 0; i < a.length; i ++)
 		{
-			System.out.println(a[i]);
+			print(a[i]);
 		}
+	}
+	
+	public static void print(Atom a)
+	{
+//		I honestly this its dumb how java makes you type out a bunch of stuff for printing
+		System.out.println(a);
 	}
 	
 
