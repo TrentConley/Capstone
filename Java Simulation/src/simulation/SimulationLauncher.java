@@ -9,6 +9,8 @@ import java.util.*;
  * 
  * http://hyperphysics.phy-astr.gsu.edu/hbase/Kinetic/kintem.html getting some gas math from here
  */
+// I will be using argon in the simulation because it is the cheapest nobel gas, and I want
+// to actaully build this simulation
 public class SimulationLauncher 
 	{
 //	the number of atoms in the system
