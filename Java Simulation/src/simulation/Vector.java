@@ -7,10 +7,10 @@ import java.math.*;
 //This class will store everything related to lines, and manipulations. 
 public class Vector 
 {
-	private BigDecimal magnitude;
-	private BigDecimal theta;
+	private double magnitude;
+	private double theta;
 	
-	public Vector (BigDecimal magnitudeIn, BigDecimal thetaIn)
+	public Vector (double magnitudeIn, double thetaIn)
 	{
 		magnitude = magnitudeIn;
 		theta = thetaIn;
