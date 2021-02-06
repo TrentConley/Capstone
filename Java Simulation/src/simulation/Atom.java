@@ -151,6 +151,7 @@ public abstract class Atom
 	public String toString()
 	{
 		return "Coordinates Information: " + this.c.toString() + "\n" +
-				"Vector Information: " + this.v.toString();
+				"Vector Information: " + this.v.toString() + "\n";
+		
 	}
 }

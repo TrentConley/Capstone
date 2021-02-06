@@ -34,42 +34,53 @@ public class SimulationLauncher
 	 */
 	public static void main(String[] args) 
 	{
-		Atom[] myAtoms = createHelium();
+		Atom[] myAtoms = createArgon();
 		print(myAtoms);
 		
 		
 		// TODO Auto-generated method stub
 	}
 	
-	public static Helium[] createHelium()
+	public static Argon[] createArgon()
 	{
-		Helium[] allAtoms = new Helium[NUM_ATOMS];
+		Argon[] allAtoms = new Argon[NUM_ATOMS];
 		for (int i = 0; i < NUM_ATOMS; i++)
 		{
-			allAtoms[i] = createAtomFollowingDistribution();
+			allAtoms[i] = createArgonFollowingDistribution();
 		} 
 		return allAtoms;
 	}
 	
-	private static Helium createAtomFollowingDistribution()
+	private static Argon createArgonFollowingDistribution()
 	{
 //		velocity equals (from solving equations from the link at the top of the file) 
 //		(3kT/m)^(1/2) where k is the 
 //		k = 1.38064852 × 10^-23 m^2 kg s^-2 K-1
-		BigDecimal three = new BigDecimal("3,0"); 
-		BigDecimal mass = new BigDecimal (Helium.MASS);
+		BigDecimal three = new BigDecimal("3.0"); 
+		BigDecimal mass = new BigDecimal (String.valueOf(Argon.MASS));
+		print(mass);
 		BigDecimal ktemp = k.multiply(STARTING_TEMPERATURE_SYSTEM);
 		BigDecimal ktempthree = ktemp.multiply(three);
-		BigDecimal ktempthreemass = ktempthree.divide(mass);
-		BigDecimal velocity = ktempthreemass.sqrt(null);
+		MathContext mc = new MathContext(2, RoundingMode.HALF_UP);
+		BigDecimal ktempthreemass = ktempthree.divide(mass, mc);
+		BigDecimal velocityBigDecimal = ktempthreemass.sqrt(mc);
+		print(velocityBigDecimal);
+		double velocity = velocityBigDecimal.doubleValue();
+		
 //		I created the lines above to be redundant in the calculation of the velocity. 
 		double theta = Math.random()*2*Math.PI;
-		double x = 0;
-		double y = 0;
+		double x = Math.random()*SIZE_X;
+		double y = Math.random()*SIZE_Y;
 		Coordinates c = new Coordinates (x,y);
 		Vector v = new Vector(velocity, theta);
-		Helium newHelium = new Helium(c, v);
-		return newHelium;
+		Argon newArgon = new Argon(c, v);
+		return newArgon;
+		
+		
+		
+//		find the units for everything!!!
+		
+		
 	}
 	
 	public static void print(Atom[] a)
@@ -86,8 +97,8 @@ public class SimulationLauncher
 		System.out.println(a);
 	}
 	
-
-			
-	
+	public static void print(BigDecimal n)
+	{
+		System.out.println(n);
+	}
 }
-
