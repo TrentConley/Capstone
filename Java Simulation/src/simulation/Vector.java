@@ -2,14 +2,15 @@
  * 
  */
 package simulation;
+import java.math.*;
 
 //This class will store everything related to lines, and manipulations. 
 public class Vector 
 {
-	private double magnitude;
-	private double theta;
+	private BigDecimal magnitude;
+	private BigDecimal theta;
 	
-	public Vector (double magnitudeIn, double thetaIn)
+	public Vector (BigDecimal magnitudeIn, BigDecimal thetaIn)
 	{
 		magnitude = magnitudeIn;
 		theta = thetaIn;
