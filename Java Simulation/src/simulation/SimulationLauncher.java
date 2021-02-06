@@ -9,8 +9,8 @@ import java.util.*;
  * 
  * http://hyperphysics.phy-astr.gsu.edu/hbase/Kinetic/kintem.html getting some gas math from here
  */
-// I will be using argon in the simulation because it is the cheapest nobel gas, and I want
-// to actaully build this simulation
+// I will be using argon in the simulation because it is the cheapest noble gas, and I want
+// to actually build this simulation
 public class SimulationLauncher 
 	{
 //	the number of atoms in the system
@@ -22,6 +22,10 @@ public class SimulationLauncher
 	
 //	This should equal 1.38064852 * 10^-23, boltzmann constant
 	public static final BigDecimal k = new BigDecimal(".000000000000000000000138064852");
+	
+	public static final double SIZE_X = 0;
+	
+	public static final double SIZE_Y = 0;
 	
 
 	/**
