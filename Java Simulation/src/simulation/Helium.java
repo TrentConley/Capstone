@@ -13,17 +13,5 @@ public class Helium extends Atom
 		super(cIn, vIn);
 		// TODO Auto-generated constructor stub
 	}
-	
-//	I don't think that I need to get the stuff from above because the program will look up
-	
-	public double getMass()
-	{
-		return MASS;
-	}
-	
-	public double getRadius()
-	{
-		return RADIUS;
-	}
 
 }
