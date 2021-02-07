@@ -24,12 +24,32 @@ public abstract class Atom
 		v = copyV;
 	}
 
-	
+	/*
 	public void make_relative(Atom mov, Atom stat)
 	{
 //		going to make one atom stationary relative to the other. 
 		return;
 	}
+	*/
+	/**
+	 * Finds the time until collision with another atom. If none, returns -1. 
+	 * @return
+	 */
+	public double timeUntilCollision(Atom a)
+	{
+		
+		return -1;
+	}
+	
+	/**
+	 * Find the time until collision of a wall.
+	 * @return
+	 */
+	public double timeUntilCollision()
+	{
+		return 0;
+	}
+	
 	
 
 //	These four methods will allow the me to get all of the class scope variables.

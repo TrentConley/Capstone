@@ -16,18 +16,6 @@ public class Vector
 		theta = thetaIn;
 	}
 	
-//	returns the closest distance from this Line to the coordinates C
-	public double findDistanceClosestApproach(Coordinates c)
-	{
-		Vector perp = createPerpendicular(c);
-		return 0;
-	}
-	
-	private Vector createPerpendicular(Coordinates c) 
-	{
-		
-		return this;
-	}
 	
 	public double getXvel()
 	{

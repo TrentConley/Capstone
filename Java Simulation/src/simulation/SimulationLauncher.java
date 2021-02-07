@@ -19,15 +19,16 @@ public class SimulationLauncher
 	
 //	all atoms will be assigned a single temperature, but as the simulation continues they will 
 //	naturally fall into a Maxwell-Boltzmann distribution. 
-	public static final BigDecimal STARTING_TEMPERATURE_SYSTEM = new BigDecimal ("273.0");
+	public static final BigDecimal STARTING_TEMPERATURE_SYSTEM = new BigDecimal ("293.0");
 	
 //	This should equal 1.38064852 * 10^-23, boltzmann constant
 	public static final BigDecimal k = new BigDecimal("1.38064852e-23");
 	
-//	the size of the simulation will be in micro meters. 
-	public static final double SIZE_X = 10000;
+//	the size of the simulation will be in pico meters to match the radius of the atoms, and one 
+//	cubic centimeter. 
+	public static final double SIZE_X = 10000000;
 	
-	public static final double SIZE_Y = 10000;
+	public static final double SIZE_Y = 10000000;
 	
 //	1 amu  = 1.6605e-27 kg
 	public static final BigDecimal atomicMassUnitsToKilograms = new BigDecimal("1.6605e-27");
@@ -57,19 +58,9 @@ public class SimulationLauncher
 	
 	private static Argon createArgonFollowingDistribution()
 	{
-//		velocity equals (from solving equations from the link at the top of the file) 
-//		(3kT/m)^(1/2) where k is the 
-//		k = 1.38064852 × 10^-23 m^2 kg s^-2 K-1
-		BigDecimal three = new BigDecimal("3.0"); 
-		BigDecimal massAtomicUnits = new BigDecimal (String.valueOf((Argon.MASS)));
-		BigDecimal massKilograms = massAtomicUnits.multiply(atomicMassUnitsToKilograms);
-		BigDecimal ktemp = k.multiply(STARTING_TEMPERATURE_SYSTEM);
-		BigDecimal ktempthree = ktemp.multiply(three);
-		MathContext mc = new MathContext(2, RoundingMode.HALF_UP);
-		BigDecimal ktempthreemass = ktempthree.divide(massKilograms, mc);
-		BigDecimal velocityBigDecimal = ktempthreemass.sqrt(mc);
-		double velocity = velocityBigDecimal.doubleValue();
-		
+//		Note to self: make sure there are no overlaps with the wall and the created atoms. 
+		double velocity = getVelocity()*1000 /*milimeters*/ *1000 /*micrometers*/ *1000/*picometers*/;
+//		I can combine the line above when I finilize the project
 //		I created the lines above to be redundant in the calculation of the velocity. 
 		double theta = Math.random()*2*Math.PI;
 		double x = Math.random()*SIZE_X;
@@ -78,6 +69,30 @@ public class SimulationLauncher
 		Vector v = new Vector(velocity, theta);
 		Argon newArgon = new Argon(c, v);
 		return newArgon;	
+	}
+	
+	private static double getVelocity()
+	{
+//		velocity equals (from solving equations from the link at the top of the file) 
+//		(3kT/m)^(1/2) where k is the 
+//		k = 1.38064852 × 10^-23 m^2 kg s^-2 K-1
+		BigDecimal three = new BigDecimal("3.0"); 
+//		converting amu to kg
+		BigDecimal massAtomicUnits = new BigDecimal (String.valueOf((Argon.MASS)));
+		BigDecimal massKilograms = massAtomicUnits.multiply(atomicMassUnitsToKilograms);
+		
+//		operations
+		BigDecimal ktemp = k.multiply(STARTING_TEMPERATURE_SYSTEM);
+		BigDecimal ktempthree = ktemp.multiply(three);
+		
+//		need mathcontext to prevent errors. 17 digits is the precision of doubles, so am keeping
+//		it at that. 
+		MathContext mc = new MathContext(17, RoundingMode.HALF_UP);
+		BigDecimal ktempthreemass = ktempthree.divide(massKilograms, mc);
+		BigDecimal velocityBigDecimal = ktempthreemass.sqrt(mc);
+
+		double velocity = velocityBigDecimal.doubleValue();
+		return velocity;
 	}
 	
 	public static void print(Atom[] a)
