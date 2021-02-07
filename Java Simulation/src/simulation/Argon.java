@@ -1,5 +1,5 @@
 package simulation;
-
+import java.math.*;
 public class Argon extends Atom
 {
 

@@ -77,13 +77,7 @@ public class SimulationLauncher
 		Coordinates c = new Coordinates (x,y);
 		Vector v = new Vector(velocity, theta);
 		Argon newArgon = new Argon(c, v);
-		return newArgon;
-		
-		
-		
-//		find the units for everything!!!
-		
-		
+		return newArgon;	
 	}
 	
 	public static void print(Atom[] a)
