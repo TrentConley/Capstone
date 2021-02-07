@@ -11,6 +11,7 @@ import java.util.*;
  */
 // I will be using argon in the simulation because it is the cheapest noble gas, and I want
 // to actually build this simulation
+// we can make the simulation a cubic millimeter. I think that is a good idea. 
 public class SimulationLauncher 
 	{
 //	the number of atoms in the system
