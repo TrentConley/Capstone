@@ -12,6 +12,9 @@ import java.util.*;
 // I will be using argon in the simulation because it is the cheapest noble gas, and I want
 // to actually build this simulation
 // we can make the simulation a cubic centimeter. I think that is a good idea. 
+
+
+// add a way to change the pressure, to determine the number of molecules in the simulation. 
 public class SimulationLauncher 
 	{
 //	the number of atoms in the system
@@ -24,8 +27,9 @@ public class SimulationLauncher
 //	This should equal 1.38064852 * 10^-23, boltzmann constant
 	public static final BigDecimal k = new BigDecimal("1.38064852e-23");
 	
-//	the size of the simulation will be in pico meters to match the radius of the atoms, and one 
-//	cubic centimeter. 
+//	the size of the simulation will be in pico meters to match the radius of the atoms,
+//	the size of this is equal to 10 cubic micrometers. 
+	
 	public static final double SIZE_X = 10000000;
 	
 	public static final double SIZE_Y = 10000000;
@@ -99,7 +103,7 @@ public class SimulationLauncher
 	{
 		for (int i = 0; i < a.length; i ++)
 		{
-//			lol
+//			
 			print(a[i]);
 		}
 	}
