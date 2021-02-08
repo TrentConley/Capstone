@@ -7,7 +7,7 @@ import java.math.*;
 //This class will store everything related to lines, and manipulations. 
 public class Vector 
 {
-	private double magnitude;
+	private double magnitude; //the magnitude will be quite large beccause it will be in terms of the 
 	private double theta;
 	
 	public Vector (double magnitudeIn, double thetaIn)
