@@ -30,7 +30,10 @@ public class SimulationLauncher
 	public static final BigDecimal R = new BigDecimal ("8.31446261815324");
 	
 	
-	public static final int NUM_ATOMS = (int) (PRESSUE);
+//	public static final int NUM_ATOMS = (int) (PRESSUE);
+//	Because we are not working the three dimensions yet, we cannot apply current equations to govern 
+//	pressure, volume, and temperature. 
+	public static final int NUM_ATOMS = 10000; 
 	
 	public static final double CUBIC_SIZE = 0; 
 	
