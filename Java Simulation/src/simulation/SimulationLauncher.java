@@ -18,41 +18,54 @@ public class SimulationLauncher
 	{
 //	the number of atoms in the system
 
-
+//  PV = nRT
+//	we will be determining the amount (n) of molecules in the system
 //	measured in atmospheres. 
-	public static final double PRESSUE = 1;
+//	ideal gas constant
+	public static final BigDecimal R = new BigDecimal ("8.31446261815324");
+	
+	public static final BigDecimal PRESSURE = new BigDecimal("1");
+	public static final BigDecimal TEMPERATURE = new BigDecimal ("293.0");
+	
+//	the size of the simulation will be in pico meters to match the radius of the atoms,
+//	the size of this is equal to 10 cubic (or square first) micrometers. 100000000000000
+//	i should probably check the calculations 
+	public static final BigDecimal VOLUME = new BigDecimal(1.0e14); 
+	
+	public static final BigInteger NUM_ATOMS = PRESSURE.multiply(VOLUME).divide((R.multiply(TEMPERATURE))).toBigInteger(); 
+	
+	
+
+
 	
 //	avagadros number
 	public static final BigDecimal A = new BigDecimal(6.02214076e23);
 	
-//	ideal gas constant
-	public static final BigDecimal R = new BigDecimal ("8.31446261815324");
+
 	
 	
 //	public static final int NUM_ATOMS = (int) (PRESSUE);
 //	Because we are not working the three dimensions yet, we cannot apply current equations to govern 
 //	pressure, volume, and temperature. 
-	public static final int NUM_ATOMS = 10000; 
+
 	
 	public static final double CUBIC_SIZE = 0; 
 	
-//	the size of the simulation will be in pico meters to match the radius of the atoms,
-//	the size of this is equal to 10 cubic (or square first) micrometers. 100000000000000
-//	i should probably check the calculations 
+
 	
-	public static final BigDecimal SQUARE_SIZE = new BigDecimal(1.0e14); 
+
 	
  //	math context for finding the size of the simulation 
 	
 	public static final MathContext mc = new MathContext(17, RoundingMode.HALF_UP);
 	
-	public static final double SIZE_X = SQUARE_SIZE.sqrt(mc).doubleValue();
+	public static final BigDecimal SIZE_X = VOLUME.sqrt(mc);
 	
-	public static final double SIZE_Y = SQUARE_SIZE.sqrt(mc).doubleValue();
+	public static final BigDecimal SIZE_Y = VOLUME.sqrt(mc);
 	
 //	all atoms will be assigned a single temperature, but as the simulation continues they will 
 //	naturally fall into a Maxwell-Boltzmann distribution. 
-	public static final BigDecimal STARTING_TEMPERATURE_SYSTEM = new BigDecimal ("293.0");
+
 	
 //	This should equal 1.38064852 * 10^-23, boltzmann constant
 	public static final BigDecimal k = new BigDecimal("1.38064852e-23");
