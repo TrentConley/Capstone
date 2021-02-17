@@ -34,10 +34,6 @@ public class SimulationLauncher
 	
 	public static final BigInteger NUM_ATOMS = PRESSURE.multiply(VOLUME).divide((R.multiply(TEMPERATURE))).toBigInteger(); 
 	
-	
-
-
-	
 //	avagadros number
 	public static final BigDecimal A = new BigDecimal(6.02214076e23);
 	
