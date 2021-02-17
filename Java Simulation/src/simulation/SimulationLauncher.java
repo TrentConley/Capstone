@@ -71,10 +71,6 @@ public class SimulationLauncher
 	public static final BigDecimal k = new BigDecimal("1.38064852e-23");
 	
 
-	
-	
-
-	
 //	1 amu  = 1.6605e-27 kg
 	public static final BigDecimal atomicMassUnitsToKilograms = new BigDecimal("1.6605e-27");
 	
