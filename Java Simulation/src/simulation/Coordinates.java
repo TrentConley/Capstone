@@ -1,40 +1,41 @@
 package simulation;
+import java.math.*;
 
 // this class will store and manipulates x-y coordinates, and eventually z too. 
 public class Coordinates 
 {
-	private double x;
-	private double y;
+	private BigDecimal x;
+	private BigDecimal y;
 	
-	public Coordinates(double xin, double yin)
+	public Coordinates(BigDecimal xin, BigDecimal yin)
 	{
 		x = xin;
 		y = yin;
 	}
 	
-	public double getX()
+	public BigDecimal getX()
 	{
 		return x;
 	}
 	
-	public double getY()
+	public BigDecimal getY()
 	{
 		return y;
 	}
 	
-	public void setX(double xIn)
+	public void setX(BigDecimal xIn)
 	{
 		x = xIn;
 	}
 	
-	public void setY(double yIn)
+	public void setY(BigDecimal yIn)
 	{
 		y = yIn;
 	}
 	
 	public String toString()
 	{
-		return "X coordinate = " + Double.toString(x) + " Y coordinate = " + Double.toString(y);
+		return "X coordinate = " + x.toString() + " Y coordinate = " + y.toString();
 	}
 	
 }

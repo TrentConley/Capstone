@@ -37,20 +37,6 @@ public class SimulationLauncher
 //	avagadros number
 	public static final BigDecimal A = new BigDecimal(6.02214076e23);
 	
-
-	
-	
-//	public static final int NUM_ATOMS = (int) (PRESSUE);
-//	Because we are not working the three dimensions yet, we cannot apply current equations to govern 
-//	pressure, volume, and temperature. 
-
-	
-	public static final double CUBIC_SIZE = 0; 
-	
-
-	
-
-	
  //	math context for finding the size of the simulation 
 	
 	public static final MathContext mc = new MathContext(17, RoundingMode.HALF_UP);
@@ -101,8 +87,8 @@ public class SimulationLauncher
 //		I can combine the line above when I finilize the project
 //		I created the lines above to be redundant in the calculation of the velocity. 
 		double theta = Math.random()*2*Math.PI;
-		double x = Math.random()*SIZE_X;
-		double y = Math.random()*SIZE_Y;
+		BigDecimal x = SIZE_X.multiply(new BigDecimal(Math.random()));
+		BigDecimal y = SIZE_Y.multiply(new BigDecimal(Math.random()));
 		Coordinates c = new Coordinates (x,y);
 		Vector v = new Vector(velocity, theta);
 		Argon newArgon = new Argon(c, v);
