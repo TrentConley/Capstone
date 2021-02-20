@@ -31,7 +31,9 @@ public class SimulationLauncher
 //	the size of this is equal to 10 cubic (or square first) micrometers. 100000000000000
 //	i should probably check the calculations 
 	public static final BigDecimal VOLUME = new BigDecimal(1.0e14); 
-	
+
+	//	need mathcontext to prevent infinite decimal errors. I will try to speed up simulation 
+//	in future and not use big Decimals. 
 	public static final MathContext MC = new MathContext(30, RoundingMode.HALF_UP);
 	
 	public static final BigInteger NUM_ATOMS = PRESSURE.multiply(VOLUME, MC).divide(R.multiply(TEMPERATURE, MC), MC).toBigInteger(); 
@@ -39,7 +41,7 @@ public class SimulationLauncher
 //	avagadros number
 	public static final BigDecimal A = new BigDecimal(6.02214076e23);
 	
- //	math context for finding the size of the simulation 
+
 	
 
 	
@@ -112,8 +114,7 @@ public class SimulationLauncher
 		BigDecimal ktemp = k.multiply(TEMPERATURE);
 		BigDecimal ktempthree = ktemp.multiply(three);
 		
-//		need mathcontext to prevent errors. 17 digits is the precision of doubles, so am keeping
-//		it at that. 
+
 		BigDecimal ktempthreemass = ktempthree.divide(massKilograms, MC);
 		BigDecimal velocityBigDecimal = ktempthreemass.sqrt(MC);
 
