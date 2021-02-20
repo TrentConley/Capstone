@@ -24,7 +24,7 @@ public class SimulationLauncher
 //	ideal gas constant
 	public static final BigDecimal R = new BigDecimal ("8.31446261815324");
 	
-	public static final BigDecimal PRESSURE = new BigDecimal("1");
+	public static final BigDecimal PRESSURE = new BigDecimal("1.0e-6");
 	public static final BigDecimal TEMPERATURE = new BigDecimal ("293.0");
 	
 //	the size of the simulation will be in pico meters to match the radius of the atoms,
@@ -32,18 +32,20 @@ public class SimulationLauncher
 //	i should probably check the calculations 
 	public static final BigDecimal VOLUME = new BigDecimal(1.0e14); 
 	
-	public static final BigInteger NUM_ATOMS = PRESSURE.multiply(VOLUME).divide((R.multiply(TEMPERATURE))).toBigInteger(); 
+	public static final MathContext MC = new MathContext(30, RoundingMode.HALF_UP);
+	
+	public static final BigInteger NUM_ATOMS = PRESSURE.multiply(VOLUME, MC).divide(R.multiply(TEMPERATURE, MC), MC).toBigInteger(); 
 	
 //	avagadros number
 	public static final BigDecimal A = new BigDecimal(6.02214076e23);
 	
  //	math context for finding the size of the simulation 
 	
-	public static final MathContext mc = new MathContext(17, RoundingMode.HALF_UP);
+
 	
-	public static final BigDecimal SIZE_X = VOLUME.sqrt(mc);
+	public static final BigDecimal SIZE_X = VOLUME.sqrt(MC);
 	
-	public static final BigDecimal SIZE_Y = VOLUME.sqrt(mc);
+	public static final BigDecimal SIZE_Y = VOLUME.sqrt(MC);
 	
 //	all atoms will be assigned a single temperature, but as the simulation continues they will 
 //	naturally fall into a Maxwell-Boltzmann distribution. 
@@ -71,8 +73,9 @@ public class SimulationLauncher
 	
 	public static Argon[] createArgon()
 	{
-		Argon[] allAtoms = new Argon[NUM_ATOMS];
-		for (int i = 0; i < NUM_ATOMS; i++)
+		print(NUM_ATOMS);
+		Argon[] allAtoms = new Argon[NUM_ATOMS.intValue()];
+		for (int i = 0; i < NUM_ATOMS.intValue(); i++)
 		{
 			allAtoms[i] = createArgonFollowingDistribution();
 		} 
@@ -106,14 +109,13 @@ public class SimulationLauncher
 		BigDecimal massKilograms = massAtomicUnits.multiply(atomicMassUnitsToKilograms);
 		
 //		operations
-		BigDecimal ktemp = k.multiply(STARTING_TEMPERATURE_SYSTEM);
+		BigDecimal ktemp = k.multiply(TEMPERATURE);
 		BigDecimal ktempthree = ktemp.multiply(three);
 		
 //		need mathcontext to prevent errors. 17 digits is the precision of doubles, so am keeping
 //		it at that. 
-		MathContext mc = new MathContext(17, RoundingMode.HALF_UP);
-		BigDecimal ktempthreemass = ktempthree.divide(massKilograms, mc);
-		BigDecimal velocityBigDecimal = ktempthreemass.sqrt(mc);
+		BigDecimal ktempthreemass = ktempthree.divide(massKilograms, MC);
+		BigDecimal velocityBigDecimal = ktempthreemass.sqrt(MC);
 
 		double velocity = velocityBigDecimal.doubleValue();
 		return velocity;
@@ -135,6 +137,11 @@ public class SimulationLauncher
 	}
 	
 	public static void print(BigDecimal n)
+	{
+		System.out.println(n);
+	}
+	
+	public static void print(BigInteger n)
 	{
 		System.out.println(n);
 	}
