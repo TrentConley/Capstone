@@ -1,4 +1,5 @@
 package simulation;
+import java.math.*;
 
 /**
  * @author trentconley
@@ -35,10 +36,10 @@ public abstract class Atom
 	 * Finds the time until collision with another atom. If none, returns -1. 
 	 * @return
 	 */
-	public double timeUntilCollision(Atom a)
+	public BigDecimal timeUntilCollision(Atom a)
 	{
 		
-		return -1;
+		return new BigDecimal ("-1");
 	}
 	
 	/**

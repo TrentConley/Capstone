@@ -24,13 +24,11 @@ public class SimulationLauncher
 //	ideal gas constant
 	public static final BigDecimal R = new BigDecimal ("8.31446261815324");
 	
-	public static final BigDecimal PRESSURE = new BigDecimal("1.0e-6");
+	public static final BigDecimal PRESSURE = new BigDecimal("1.0e-10");
 	public static final BigDecimal TEMPERATURE = new BigDecimal ("293.0");
 	
-//	the size of the simulation will be in pico meters to match the radius of the atoms,
-//	the size of this is equal to 10 cubic (or square first) micrometers. 100000000000000
-//	i should probably check the calculations 
-	public static final BigDecimal VOLUME = new BigDecimal(1.0e14); 
+//  square size (for now) in picometers
+	public static final BigDecimal VOLUME = new BigDecimal(1.0e16); 
 
 	//	need mathcontext to prevent infinite decimal errors. I will try to speed up simulation 
 //	in future and not use big Decimals. 
@@ -60,19 +58,46 @@ public class SimulationLauncher
 //	1 amu  = 1.6605e-27 kg
 	public static final BigDecimal atomicMassUnitsToKilograms = new BigDecimal("1.6605e-27");
 	
+	public static final double END_TIME = 0;
+	
 	/**
 	 * @param args
 	 * next step: collision mechanism. 
 	 */
 	public static void main(String[] args) 
 	{
+//		as of February 20th, 2021, the current number of atoms are 410. Should be enough to simulate. 
 		Atom[] myAtoms = createArgon();
-		print(myAtoms);
-		
+		BigDecimal currentTime = new BigDecimal("0.0");
+		BigDecimal shortestTime = myAtoms[0].timeUntilCollision(myAtoms[1]);
+		while (currentTime.doubleValue() < END_TIME)
+		{
+			// finding the shortest time and atoms until collision
+			for (int i =0; i < myAtoms.length; i++)
+			{
+				for (int j = 1; j < myAtoms.length; j ++)
+				{
+					//There will always be more than 2 atoms
+					BigDecimal collision = myAtoms[i].timeUntilCollision(myAtoms[j]);
+					
+				}
+			}
+			update(myAtoms, shortestTime);
+			currentTime = currentTime.add(shortestTime, MC);
+			// simulate!
+		}
 		
 		// TODO Auto-generated method stub
 	}
 	
+	public static void update(Atom[] arr, BigDecimal t)
+	{
+		for (Atom a: arr)
+		{
+			a.setCoordinates(null);
+		}
+	}
+
 	public static Argon[] createArgon()
 	{
 		print(NUM_ATOMS);

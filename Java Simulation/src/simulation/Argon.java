@@ -14,5 +14,10 @@ public class Argon extends Atom
 		super(cIn, vIn);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public BigDecimal timeUntilCollision(Atom a)
+	{
+		return new BigDecimal ("-1");
+	}
 
 }
