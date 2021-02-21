@@ -46,9 +46,10 @@ public abstract class Atom
 		return this.mass;
 	}
 	
-	public BigDecimal timeUntilCollision(MathContext mc, Atom a)
+	public BigDecimal timeUntilCollision(MathContext mc, Atom a, BigDecimal current)
 	{
-		return new BigDecimal ('0');
+		BigDecimal next = new BigDecimal ("0");
+		return current.add(next, mc);
 	}
 
 	
