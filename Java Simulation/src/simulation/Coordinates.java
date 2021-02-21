@@ -9,28 +9,28 @@ public class Coordinates
 	
 	public Coordinates(BigDecimal xin, BigDecimal yin)
 	{
-		x = xin;
-		y = yin;
+		this.x = xin;
+		this.y = yin;
 	}
 	
 	public BigDecimal getX()
 	{
-		return x;
+		return this.x;
 	}
 	
 	public BigDecimal getY()
 	{
-		return y;
+		return this.y;
 	}
 	
 	public void setX(BigDecimal xIn)
 	{
-		x = xIn;
+		this.x = xIn;
 	}
 	
 	public void setY(BigDecimal yIn)
 	{
-		y = yIn;
+		this.y = yIn;
 	}
 	
 	public String toString()

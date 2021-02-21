@@ -11,7 +11,7 @@ public class Argon extends Atom
 	
 	public Argon(Coordinates cIn, Vector vIn) 
 	{
-		super(cIn, vIn);
+		super(cIn, vIn, RADIUS, MASS);
 		// TODO Auto-generated constructor stub
 	}
 	

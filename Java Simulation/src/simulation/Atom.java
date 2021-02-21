@@ -12,17 +12,21 @@ public abstract class Atom
 {
 	private Coordinates c;
 	private Vector v;
+	private final double radius;
+	private final double mass;
 
 //	private double size = 0; I will ignore the size of the atom for now because the math will
 //	get really hard if I consider the atom as a sphere, I eventually will though. 
 //	This is a constructor that will initiate all of the class scope variables.
-	public Atom (Coordinates cIn, Vector vIn)
+	public Atom (Coordinates cIn, Vector vIn, double radiusIn, double massIn)
 	{	
 //		creating copy will prevent errors from mixing addresses in the heap. 
 		Coordinates copyC = new Coordinates(cIn.getX(), cIn.getY());
-		c = copyC;
+		this.c = copyC;
 		Vector copyV = new Vector(vIn.getMagnitude(), vIn.getTheta());
-		v = copyV;
+		this.v = copyV;
+		this.radius = radiusIn;
+		this.mass = massIn;
 	}
 
 	/*
@@ -32,24 +36,21 @@ public abstract class Atom
 		return;
 	}
 	*/
-	/**
-	 * Finds the time until collision with another atom. If none, returns -1. 
-	 * @return
-	 */
-	public BigDecimal timeUntilCollision(Atom a)
+	public double getRadius()
 	{
-		
-		return new BigDecimal ("-1");
+		return this.radius;
 	}
 	
-	/**
-	 * Find the time until collision of a wall.
-	 * @return
-	 */
-	public double timeUntilCollision()
+	public double getMass()
 	{
-		return 0;
+		return this.mass;
 	}
+	
+	public BigDecimal timeUntilCollision(MathContext mc, Atom a)
+	{
+		return new BigDecimal ('0');
+	}
+
 	
 	
 
@@ -74,7 +75,7 @@ public abstract class Atom
 		
 //		Setting something equivalent to an address that you are using in the heap can cause 
 //		errors later on in the future, but I will leave it for now. 
-		c = new Coordinates(cIn.getX(), cIn.getY());
+		this.c = new Coordinates(cIn.getX(), cIn.getY());
 	}
 	
 	
