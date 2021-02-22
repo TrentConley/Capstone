@@ -23,16 +23,12 @@ public class Vector
 	 * 
 	 * 
 	 */
+	private BigDecimal[] tail; //the tail will be a tuple of the coordinates that the object starts at
+//	also, when randomly generating the atoms, make sure that there are no collisions with the 
+//	boundries of the syste. 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	private BigDecimal xMag;
+	private BigDecimal yMag;
 	
 	
 	private double magnitude; //the magnitude will be quite large beccause it will be in terms of the 
