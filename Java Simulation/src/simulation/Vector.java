@@ -16,7 +16,8 @@ public class Vector
 	 * however, if you keep the theta as an intermediary step, then you eliminate the risk of 
 	 * potential skewing. All I would have to calculate is the acutal conversion from the theta
 	 * to the vector coefficients. I dont think that will be too hard. However, applying that method
-	 * to three dimentions is quite hard. 
+	 * to three dimentions is quite hard. However, I could simply add another RNG for the x-z plane
+	 * and that should solve the problem. I think that is how I will impliment this class. 
 	 * 
 	 * 
 	 * 
