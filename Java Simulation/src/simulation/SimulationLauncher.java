@@ -133,15 +133,16 @@ public class SimulationLauncher
 			Coordinates c = new Coordinates (x,y);
 			Vector v = new Vector(xMag, yMag, new Coordinates(x, y));
 			newArgon = new Argon(v);
+			print("a");
 		}
-		while(notTouchingBorder(newArgon));
+		while(touchingBorder(newArgon));
 		
 		return newArgon;	
 	}
 	
-	private static Boolean notTouchingBorder(Atom a)
+	private static Boolean touchingBorder(Atom a)
 	{
-		return true;
+		return false;
 	}
 	
 	private static BigDecimal getVelocity()
@@ -187,5 +188,10 @@ public class SimulationLauncher
 	public static void print(BigInteger n)
 	{
 		System.out.println(n);
+	}
+	
+	public static void print(String s)
+	{
+		System.out.println(s);
 	}
 }
