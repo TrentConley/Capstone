@@ -141,7 +141,7 @@ public class SimulationLauncher
 	
 	private static Boolean notTouchingBorder(Atom a)
 	{
-		return false;
+		return true;
 	}
 	
 	private static BigDecimal getVelocity()
