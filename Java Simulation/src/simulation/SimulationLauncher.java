@@ -118,19 +118,33 @@ public class SimulationLauncher
 	{
 //		Note to self: make sure there are no overlaps with the wall and the created atoms. 
 //		velocity will be in terms of meters per second, so we need to convert to picometers per second
-		double velocity = getVelocity()*1000 /*milimeters*/ *1000 /*micrometers*/ *1000/*picometers*/;
+		BigDecimal velocity = getVelocity().multiply(new BigDecimal("1000000000"), MC) /*milimeters*/  /*micrometers*/ /*picometers*/;
 //		I can combine the line above when I finilize the project
 //		I created the lines above to be redundant in the calculation of the velocity. 
-		double theta = Math.random()*2*Math.PI;
-		BigDecimal x = SIZE_X.multiply(new BigDecimal(Math.random()));
-		BigDecimal y = SIZE_Y.multiply(new BigDecimal(Math.random()));
-		Coordinates c = new Coordinates (x,y);
-		Vector v = new Vector(velocity, theta);
-		Argon newArgon = new Argon(c, v);
+
+		Argon newArgon = null;
+		do
+		{
+			BigDecimal x = SIZE_X.multiply(new BigDecimal(Math.random()));
+			BigDecimal y = SIZE_Y.multiply(new BigDecimal(Math.random()));
+			BigDecimal xMag = null, yMag = null;
+			xMag = velocity; yMag = velocity;
+//			now we need to get the magnitude in an effiecinent way. 
+			Coordinates c = new Coordinates (x,y);
+			Vector v = new Vector(xMag, yMag, new Coordinates(x, y));
+			newArgon = new Argon(v);
+		}
+		while(notTouchingBorder(newArgon));
+		
 		return newArgon;	
 	}
 	
-	private static double getVelocity()
+	private static Boolean notTouchingBorder(Atom a)
+	{
+		return false;
+	}
+	
+	private static BigDecimal getVelocity()
 	{
 //		velocity equals (from solving equations from the link at the top of the file) 
 //		(3kT/m)^(1/2) where k is the 
@@ -147,9 +161,7 @@ public class SimulationLauncher
 
 		BigDecimal ktempthreemass = ktempthree.divide(massKilograms, MC);
 		BigDecimal velocityBigDecimal = ktempthreemass.sqrt(MC);
-
-		double velocity = velocityBigDecimal.doubleValue();
-		return velocity;
+		return velocityBigDecimal;
 	}
 	
 	public static void print(Atom[] a)

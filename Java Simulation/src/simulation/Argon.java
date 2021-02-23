@@ -9,9 +9,9 @@ public class Argon extends Atom
 //	radius is in pm
 	public static final double RADIUS = 188;
 	
-	public Argon(Coordinates cIn, Vector vIn) 
+	public Argon(Vector vIn) 
 	{
-		super(cIn, vIn, RADIUS, MASS);
+		super(vIn, RADIUS, MASS);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -19,5 +19,6 @@ public class Argon extends Atom
 	{
 		return new BigDecimal ("-1");
 	}
+	
 
 }

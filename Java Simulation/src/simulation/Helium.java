@@ -14,9 +14,9 @@ public class Helium extends Atom
 //	when using the radius, we will need to do conversions 
 	public static final double RADIUS = 140;
 	
-	public Helium(Coordinates cIn, Vector vIn) 
+	public Helium(Vector vIn) 
 	{
-		super(cIn, vIn, RADIUS, MASS);
+		super(vIn, RADIUS, MASS);
 		// TODO Auto-generated constructor stub
 	}
 
