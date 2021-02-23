@@ -92,14 +92,14 @@ public class SimulationLauncher
 	
 	public static void timeUntilCollision()
 	{
-		
+		 
 	}
 	
 	public static void update(Atom[] arr, BigDecimal t)
 	{
 		for (Atom a: arr)
 		{
-			a.update(t, MC);
+			a.update(t, MCg);
 		}
 	}
 

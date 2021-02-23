@@ -19,6 +19,6 @@ public class Argon extends Atom
 	{
 		return new BigDecimal ("-1");
 	}
-	
+	 
 
 }

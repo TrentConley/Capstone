@@ -67,7 +67,7 @@ public class Vector
 	{
 		this.yMag = new BigDecimal(yMagIn.toString());
 	}
-	
+	 
 	public void setTail (Coordinates tailIn)
 	{
 		this.tail = new Coordinates (tailIn.getX(), tailIn.getY());

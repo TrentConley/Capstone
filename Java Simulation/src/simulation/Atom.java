@@ -64,7 +64,7 @@ public abstract class Atom
 						this.v.getTail().getY()
 						)
 				);
-	
+	 
 	}
 	
 	public void setVector(Vector vIn)
