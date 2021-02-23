@@ -23,57 +23,54 @@ public class Vector
 	 * 
 	 * 
 	 */
-	private BigDecimal[] tail; //the tail will be a tuple of the coordinates that the object starts at
+ //the tail will be a tuple of the coordinates that the object starts at
 //	also, when randomly generating the atoms, make sure that there are no collisions with the 
 //	boundries of the syste. 
 	
 	private BigDecimal xMag;
 	private BigDecimal yMag;
+	private Coordinates tail;
 	
 	
 	private double magnitude; //the magnitude will be quite large beccause it will be in terms of the 
 	private double theta;
 	
-	public Vector (double magnitudeIn, double thetaIn)
+	public Vector (BigDecimal xMagIn, BigDecimal yMagIn, Coordinates tailIn)
 	{
-		magnitude = magnitudeIn;
-		theta = thetaIn;
+		this.xMag = xMagIn;
+		this.yMag = yMagIn;
+		this.tail = tailIn;
 	}
 	
-	
-	public double getXvel()
+	public BigDecimal getXMag() 
 	{
-		return Math.cos(theta) * magnitude;
+		return new BigDecimal (this.xMag.toString());
 	}
 	
-	/*
-	 * gets the y velocity component of the atom
-	 */
-	public double get_yvel()
+	public BigDecimal getYMag()
 	{
-		return Math.sin(theta) * magnitude;
+		return new BigDecimal (this.yMag.toString());
 	}
 	
-	
-	
-	public double getMagnitude()
+	public Coordinates getTail()
 	{
-		return this.magnitude;
+		return new Coordinates(this.tail.getX(), this.tail.getY());
+	}
+
+	
+	public void setXMag(BigDecimal xMagIn)
+	{
+		this.xMag = new BigDecimal (xMagIn.toString());
 	}
 	
-	public double getTheta() 
+	public void setYMag(BigDecimal yMagIn)
 	{
-		return this.theta;
+		this.yMag = new BigDecimal(yMagIn.toString());
 	}
 	
-	public void setMagnitude(double magnitudeIn)
+	public void setTail (Coordinates tailIn)
 	{
-		this.magnitude = magnitudeIn;
-	}
-	
-	public void setTheta(double thetaIn)
-	{
-		this.theta = thetaIn;
+		this.tail = new Coordinates (tailIn.getX(), tailIn.getY());
 	}
 	
 	public String toString()
