@@ -99,7 +99,7 @@ public class SimulationLauncher
 	{
 		for (Atom a: arr)
 		{
-			a.update(t, MCg);
+			a.update(t, MC);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class SimulationLauncher
 	{
 //		Note to self: make sure there are no overlaps with the wall and the created atoms. 
 //		velocity will be in terms of meters per second, so we need to convert to picometers per second
-		BigDecimal velocity = getVelocity().multiply(new BigDecimal("1000000000"), MC) /*milimeters*/ g /*micrometers*/ /*picometers*/;
+		BigDecimal velocity = getVelocity().multiply(new BigDecimal("1000000000"), MC) /*milimeters*/  /*micrometers*/ /*picometers*/;
 //		I can combine the line above when I finilize the project
 //		I created the lines above to be redundant in the calculation of the velocity. 
 
