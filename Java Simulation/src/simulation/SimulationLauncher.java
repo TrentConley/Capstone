@@ -133,10 +133,8 @@ public class SimulationLauncher
 			Coordinates c = new Coordinates (x,y);
 			Vector v = new Vector(xMag, yMag, new Coordinates(x, y));
 			newArgon = new Argon(v);
-			print("a");
 		}
 		while(touchingBorder(newArgon));
-		
 		return newArgon;	
 	}
 	
