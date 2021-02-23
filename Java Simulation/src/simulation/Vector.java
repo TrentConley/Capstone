@@ -77,4 +77,17 @@ public class Vector
 	{
 		return "magnitude is " + Double.toString(magnitude) + " theta is " + Double.toString(theta);
 	}
+
+	public void update(BigDecimal t, MathContext mc) 
+	{
+		// calculate the new position of the atoms
+		BigDecimal additionX = this.xMag.multiply(t, mc);
+		BigDecimal additionY = this.yMag.multiply(t, mc);
+	
+//		adds the addition of each position to the vector's tail. 
+		this.tail.setX(this.tail.getX().add(additionX, mc));
+		this.tail.setY(this.tail.getX().add(additionY, mc));
+		// TODO Auto-generated method stub
+		
+	}
 }

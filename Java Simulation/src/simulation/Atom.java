@@ -87,4 +87,11 @@ public abstract class Atom
 		return "Vector Information: " + this.v.toString() + "\n";
 		
 	}
+
+	public void update(BigDecimal t, MathContext mc) 
+	{
+		this.v.update(t, mc);
+		// TODO Auto-generated method stub
+		
+	}
 }
