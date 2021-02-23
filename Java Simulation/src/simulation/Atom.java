@@ -43,14 +43,14 @@ public abstract class Atom
 		return this.mass;
 	}
 	
-	public BigDecimal timeUntilCollision(MathContext mc, Atom a)
+	public BigDecimal timeUntilCollision(Atom a, MathContext mc)
 	{
 		BigDecimal next = new BigDecimal ("0");
 		
 		
 		
 		
-		return next;
+		return null;
 	}
 	
 	public Vector getVector()

@@ -69,7 +69,7 @@ public class SimulationLauncher
 //		as of February 20th, 2021, the current number of atoms are 410. Should be enough to simulate. 
 		Atom[] myAtoms = createArgon();
 		BigDecimal currentTime = new BigDecimal("0.0");
-		BigDecimal shortestTime = myAtoms[0].timeUntilCollision(MC, myAtoms[1]);
+		BigDecimal shortestTime = myAtoms[0].timeUntilCollision(myAtoms[1], MC);
 		while (currentTime.doubleValue() < END_TIME)
 		{
 			// finding the shortest time and atoms until collision
@@ -78,7 +78,7 @@ public class SimulationLauncher
 				for (int j = 1; j < myAtoms.length; j ++)
 				{
 					//There will always be more than 2 atoms
-					BigDecimal collision = myAtoms[i].timeUntilCollision(MC, myAtoms[j]);
+					BigDecimal collision = myAtoms[i].timeUntilCollision(myAtoms[j], MC);
 					
 				}
 			}
@@ -90,9 +90,9 @@ public class SimulationLauncher
 		// TODO Auto-generated method stub
 	}
 	
-	public static void timeUntilCollision()
+	public static BigDecimal timeUntilCollision(Atom a1, Atom a2)
 	{
-		 
+		 return a1.timeUntilCollision(a2, MC);
 	}
 	
 	public static void update(Atom[] arr, BigDecimal t)
