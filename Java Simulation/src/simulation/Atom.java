@@ -59,10 +59,10 @@ public abstract class Atom
 		
 		
 //		x is the x-position of collision
-		BigDecimal x =  null; /* divided by */
-
-		
-		return null;
+		BigDecimal x =  xCords1.multiply(v1Slope, mc).
+				subtract((xCords2.multiply(v2Slope, mc)), mc).
+				add(yCords2.subtract(yCords1, mc), mc); /* divided by */
+		return x;
 	}
 	
 	public Vector getVector()
