@@ -45,6 +45,17 @@ public abstract class Atom
 	
 	public BigDecimal timeUntilCollision(Atom a, MathContext mc)
 	{
+		Vector vPerpendicular = new Vector(
+				this.getVector().getXMag(), 
+				this.getVector().getYMag().multiply(new BigDecimal ("-1"), mc), 
+				a.getVector().getTail());
+		
+		BigDecimal xcol = new BigDecimal ("0");
+
+		
+		
+		
+		
 		
 		BigDecimal next = new BigDecimal ("0");
 		

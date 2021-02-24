@@ -38,13 +38,6 @@ public class Vector
 		this.tail = tailIn;
 	}
 	
-	public BigDecimal findPerpendicular(Coordinates tailIn)
-	{
-		BigDecimal x = this.yMag;
-		BigDecimal y = this.xMag;
-		return null;
-	}
-	
 	public BigDecimal getXMag() 
 	{
 		return new BigDecimal (this.xMag.toString());
