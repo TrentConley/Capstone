@@ -46,7 +46,6 @@ public abstract class Atom
 	public BigDecimal timeUntilCollision(Atom a, MathContext mc)
 	{
 		BigDecimal v1Slope = this.getVector().getYMag().divide(this.getVector().getXMag(), mc);
-		
 		BigDecimal xCords1 = this.getVector().getTail().getX();
 		BigDecimal yCords1 = this.getVector().getTail().getY();
 		Vector v2Perpendicular = new Vector(
@@ -55,9 +54,12 @@ public abstract class Atom
 				a.getVector().getTail());
 		
 		BigDecimal v2Slope = v2Perpendicular.getYMag().divide(v2Perpendicular.getXMag(), mc);
+		BigDecimal xCords2 = v2Perpendicular.getTail().getX();
+		BigDecimal yCords2 = v2Perpendicular.getTail().getY();
+		
 		
 //		x is the x-position of collision
-		BigDecimal x = new BigDecimal("0");
+		BigDecimal x =  null; /* divided by */
 
 		
 		return null;
