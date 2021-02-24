@@ -31,15 +31,18 @@ public class Vector
 	private BigDecimal yMag;
 	private Coordinates tail;
 	
-	
-	private double magnitude; //the magnitude will be quite large beccause it will be in terms of the 
-	private double theta;
-	
 	public Vector (BigDecimal xMagIn, BigDecimal yMagIn, Coordinates tailIn)
 	{
 		this.xMag = xMagIn;
 		this.yMag = yMagIn;
 		this.tail = tailIn;
+	}
+	
+	public BigDecimal findPerpendicular(Coordinates tailIn)
+	{
+		BigDecimal x = this.yMag;
+		BigDecimal y = this.xMag;
+		return null;
 	}
 	
 	public BigDecimal getXMag() 
@@ -75,7 +78,7 @@ public class Vector
 	
 	public String toString()
 	{
-		return "magnitude is " + Double.toString(magnitude) + " theta is " + Double.toString(theta);
+		return "X = " + xMag.toString() + ", Y = " + yMag.toString() + " " + tail.toString();
 	}
 
 	public void update(BigDecimal t, MathContext mc) 

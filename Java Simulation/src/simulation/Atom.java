@@ -45,7 +45,9 @@ public abstract class Atom
 	
 	public BigDecimal timeUntilCollision(Atom a, MathContext mc)
 	{
+		
 		BigDecimal next = new BigDecimal ("0");
+		
 		return null;
 	}
 	
