@@ -9,7 +9,7 @@ public class Parametric
 //	class for storing, managing and manipulating parametric equations. 
 //	these parametric equations will only be polynomials.l 
 	
-	public Parametric ()
+	public Parametric (Line)
 	{
 		
 	}
