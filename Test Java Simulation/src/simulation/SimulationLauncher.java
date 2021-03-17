@@ -27,19 +27,15 @@ public class SimulationLauncher
 			int pos = findLeast(arr);
 			update(a, arr, pos);
 			currentTime = currentTime + arr[pos];
-			print(currentTime);
-			currentTime = currentTime + 1;
+
 		}
-		System.out.println("done");
 	
 		// TODO Auto-generated method stub
 
 	}
 	public static void update(Atom a, double[] arr, int pos)
 	{
-		print(a);
-		print(arr);
-		print("pos = " + Integer.toString(pos));
+
 		if (pos%2 == 0) 
 		{
 //			going to hit the right or left wall
@@ -99,12 +95,12 @@ public class SimulationLauncher
 	}
 	public static double collisionBottomWall(Atom a)
 	{
-		return (-a.getVector().getTail().getY() + a.getSize())/ a.getVector().getYMag();
+		return (-a.getVector().getTail().getY() + a.getSize()) / a.getVector().getYMag();
 	} 
 	public static int findLeast(double [] arr)
 	{
 		int smallestPos = 0;
-		if (arr[smallestPos] < 0)
+		if (arr[smallestPos] <= 0)
 		{
 			smallestPos = 2;
 //			ensures that it starts with a positive number
@@ -138,5 +134,9 @@ public class SimulationLauncher
 	public static void print (String s)
 	{
 		System.out.println(s);
+	}
+	public static void print (int i)
+	{
+		System.out.println(i);
 	}
 }
