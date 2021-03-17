@@ -39,7 +39,7 @@ public class SimulationLauncher
 	{
 		print(a);
 		print(arr);
-		print("pos = "+ Integer.toString(pos));
+		print("pos = " + Integer.toString(pos));
 		if (pos%2 == 0) 
 		{
 //			going to hit the right or left wall
