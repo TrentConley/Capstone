@@ -15,7 +15,7 @@ public class Atom
 	}
 	public void setVector(Vector v)
 	{
-//		this.v = v;
+//		this.v = v; 
 		this.v = new Vector(v.getXMag(), v.getYMag(), v.getTail());
 	}
 	public int getSize()

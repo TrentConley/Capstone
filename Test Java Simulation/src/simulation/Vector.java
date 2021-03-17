@@ -7,7 +7,7 @@ public class Vector
 	private double yMag;
 	public Vector (double xMag, double yMag, Coordinates tail)
 	{
-		this.xMag = xMag;
+		this.xMag = xMag; 
 		this.yMag = yMag; 
 		this.tail = tail;
 	}

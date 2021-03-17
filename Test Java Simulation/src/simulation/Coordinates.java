@@ -13,7 +13,7 @@ public class Coordinates
 	}
 	public double getX()
 	{
-		return x;
+		return x; 
 	}
 	public double getY()
 	{
