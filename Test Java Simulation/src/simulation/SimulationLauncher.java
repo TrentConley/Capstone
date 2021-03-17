@@ -1,8 +1,17 @@
 package simulation;
 import java.util.*;
 
-public class SimulationLauncher 
+//graphics tools
+import java.awt.Canvas;
+import java.awt.Graphics;
+import javax.swing.JFrame;
+
+public class SimulationLauncher extends Canvas
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L; //it just reccomended me to add this
 	public static final int SIZE_ATOM = 0;
 	public static final int SIZE_X = 100;
 	public static final int SIZE_Y = 100;
@@ -10,6 +19,15 @@ public class SimulationLauncher
 
 	public static void main(String[] args) 
 	{
+		//the following code will implement graphics for the simulation. 
+        JFrame frame = new JFrame("My Drawing");
+        Canvas canvas = new Drawing();
+        canvas.setSize(400, 400);
+        frame.add(canvas);
+        frame.pack();
+        frame.setVisible(true);
+        // done
+		
 		double xMag = 100;
 		double yMag = 101;
 		double xPos = 50;
