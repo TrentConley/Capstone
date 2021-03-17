@@ -28,6 +28,7 @@ public class SimulationLauncher
 			update(a, arr, pos);
 			currentTime = currentTime + arr[pos];
 			print(currentTime);
+			currentTime = currentTime + 1;
 		}
 		System.out.println("done");
 	
