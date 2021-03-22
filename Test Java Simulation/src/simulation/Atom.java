@@ -2,7 +2,7 @@ package simulation;
 
 public class Atom 
 {
-	private final int SIZE = 1; //radius
+	private final int SIZE = 5; //radius
 	private Vector v;
 	public Atom (Vector v)
 	{

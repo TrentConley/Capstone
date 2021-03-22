@@ -39,6 +39,6 @@ public class Vector
 	}
 	public String toString() {
 		return "xMag: " + Double.toString(this.xMag) + " yMag " + Double.toString(yMag) +
-				" tail info: " + Double.toString(this.yMag) + this.tail.toString();
+				" tail info: " + this.tail.toString();
 	}
 }

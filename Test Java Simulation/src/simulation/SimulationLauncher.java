@@ -2,41 +2,56 @@ package simulation;
 import java.util.*;
 
 //graphics tools
-import java.awt.Canvas;
-import java.awt.Graphics;
-import javax.swing.JFrame;
+//import java.awt.Canvas;
+//import java.awt.Graphics;
+//
+//import javax.swing.JFrame;
 
-public class SimulationLauncher extends Canvas
+public class SimulationLauncher  /*extends Canvas */
 {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L; //it just reccomended me to add this
-	public static final int SIZE_ATOM = 0;
-	public static final int SIZE_X = 100;
-	public static final int SIZE_Y = 100;
-	public static final double TIME = 1000;
+//	private static final long serialVersionUID = 1L; //it just recommended me to add this
+//	public static final int SIZE_ATOM = 0;
+	public static final int SIZE_X = 1000;
+	public static final int SIZE_Y = 1000;
+	public static final double TIME = 999;
+	public static final int NUM_ATOMS = 1;
+	public static final int AVERAGE_SPEED = 75;
 
 	public static void main(String[] args) 
 	{
+
+		
+		
+		
 		//the following code will implement graphics for the simulation. 
-        JFrame frame = new JFrame("My Drawing");
-        Canvas canvas = new Drawing();
-        canvas.setSize(400, 400);
-        frame.add(canvas);
-        frame.pack();
-        frame.setVisible(true);
+//        JFrame frame = new JFrame("My Drawing");
+//        Canvas canvas = new SimulationLauncher();
+//        canvas.setSize(400, 400);
+//        frame.add(canvas);
+//        frame.pack();
+//        frame.setVisible(true);
         // done
 		
-		double xMag = 100;
-		double yMag = 101;
-		double xPos = 50;
+//		double xMag = 37;
+//		double yMag = 76;
+		double xPos = Math.random()*SIZE_X ;
 		double yPos = 50;
+//		If i want to extend it to many atoms are in the simulation, I need to implement randomness.
+
+		double n = Math.random()*Math.PI*2; //gets angle between 0 and 2pi
+		double xMag = Math.cos(n)*AVERAGE_SPEED;
+		double yMag = Math.sin(n)*AVERAGE_SPEED; // now both are scaled appropriately
 		double currentTime = 0;
+		
 		Coordinates c = new Coordinates (xPos, yPos);
 		Atom a = new Atom(new Vector(xMag, yMag, c));
+	
 		while (currentTime < TIME)
 		{
+//			paint(g);
 			double[] arr = new double[4];
 			arr[0] = collisionLeftWall(a);
 			arr[1] = collisionTopWall(a);
@@ -45,12 +60,16 @@ public class SimulationLauncher extends Canvas
 			int pos = findLeast(arr);
 			update(a, arr, pos);
 			currentTime = currentTime + arr[pos];
-
+			print (a);
 		}
 	
 		// TODO Auto-generated method stub
 
 	}
+//	
+//    public void paint(Graphics g) {
+//        g.fillOval(100, 100, 200, 200);
+//    }
 	public static void update(Atom a, double[] arr, int pos)
 	{
 
