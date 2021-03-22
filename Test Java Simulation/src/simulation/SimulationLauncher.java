@@ -51,13 +51,11 @@ public class SimulationLauncher  /*extends Canvas */
 	
 		while (currentTime < TIME)
 		{
+			HashMap<String, Double> wallCollisionTimes = new HashMap<String, Double>(4);
+			fill(wallCollisionTimes, a);
 //			paint(g);
-			double[] arr = new double[4];
-			arr[0] = collisionLeftWall(a);
-			arr[1] = collisionTopWall(a);
-			arr[2] = collisionRightWall(a);
-			arr[3] = collisionBottomWall(a);
-			int pos = findLeast(arr);
+			
+			int pos = findLeast(wallCollisionTimes);
 			update(a, arr, pos);
 			currentTime = currentTime + arr[pos];
 			print (a);
@@ -66,14 +64,24 @@ public class SimulationLauncher  /*extends Canvas */
 		// TODO Auto-generated method stub
 
 	}
+	
+	public static void fill(HashMap<String, Double> h, Atom a)
+	{
+		h.put("left", collisionLeftWall(a));
+		h.put("right", collisionRightWall(a));
+		h.put("top", collisionTopWall(a));
+		h.put("base", collisionBaseWall(a));
+	}
 //	
 //    public void paint(Graphics g) {
 //        g.fillOval(100, 100, 200, 200);
 //    }
-	public static void update(Atom a, double[] arr, int pos)
+	public static void update(Atom a, HashMap<String, Double> h)
 	{
-
-		if (pos%2 == 0) 
+		String leastKey = findLeast(h);
+		double newXPos;
+		double newYPos;
+		if (h.get()) 
 		{
 //			going to hit the right or left wall
 			double newXPos;
@@ -130,27 +138,30 @@ public class SimulationLauncher  /*extends Canvas */
 	{
 		return (SIZE_X - a.getVector().getTail().getX() - a.getSize())/ a.getVector().getXMag();
 	}
-	public static double collisionBottomWall(Atom a)
+	public static double collisionBaseWall(Atom a)
 	{
 		return (-a.getVector().getTail().getY() + a.getSize()) / a.getVector().getYMag();
 	} 
-	public static int findLeast(double [] arr)
+	public static String findLeast(HashMap<String, Double> h)
 	{
-		int smallestPos = 0;
-		if (arr[smallestPos] <= 0)
+		String smallestKey = "left";
+		if (h.get(smallestKey) <= 0)
 		{
-			smallestPos = 2;
+			smallestKey = "right";
 //			ensures that it starts with a positive number
+//			if it has already hit left, it will not have hit the right. 
 		}
 		
-		for (int i = 0; i < arr.length; i++) 
+		for (Map.Entry<String,Double> entry : h.entrySet()) 
 		{
-			if (arr[i] > 0 && arr[i] < arr[smallestPos])
+            System.out.println("Key = " + entry.getKey() +
+                             ", Value = " + entry.getValue());
+			if (entry.getValue() > 0 && entry.getValue() < h.get(smallestKey))
 			{
-				smallestPos = i;
+				smallestKey = entry.getKey();
 			}
 		}
-		return smallestPos;
+		return smallestKey;
 	}
 	
 	public static void print (double[] arr)
