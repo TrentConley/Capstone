@@ -48,11 +48,20 @@ public class SimulationLauncher  /*extends Canvas */
 		
 		Coordinates c = new Coordinates (xPos, yPos);
 		Atom a = new Atom(new Vector(xMag, yMag, c));
+		Atom[] atomArr = new Atom[1];
+		atomArr[0] = a;
 	
 		while (currentTime < TIME)
 		{
-			HashMap<String, Double> wallCollisionTimes = new HashMap<String, Double>(4);
-			fill(wallCollisionTimes, a);
+//			creates a hashmap for all atoms with their own corosponding hashmap to their wall collisions
+			HashMap<Atom, HashMap<String,Double>> allWallCollisions = new HashMap<Atom, HashMap<String,Double>>(NUM_ATOMS);
+			
+			
+			
+			for (Atom atom : atomArr)
+			{
+				allWallCollisions.put(atom, makeHashMapWall(atom));
+			}
 //			paint(g);
 			
 			int pos = findLeast(wallCollisionTimes);
@@ -65,12 +74,14 @@ public class SimulationLauncher  /*extends Canvas */
 
 	}
 	
-	public static void fill(HashMap<String, Double> h, Atom a)
-	{
+	public static HashMap<String, Double> makeHashMapWall(Atom a)
+	{                                                  
+		HashMap<String, Double> h = new HashMap<String, Double>(4);
 		h.put("left", collisionLeftWall(a));
 		h.put("right", collisionRightWall(a));
 		h.put("top", collisionTopWall(a));
 		h.put("base", collisionBaseWall(a));
+		return h;
 	}
 //	
 //    public void paint(Graphics g) {
