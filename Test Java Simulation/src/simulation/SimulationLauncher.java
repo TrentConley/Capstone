@@ -18,7 +18,7 @@ public class SimulationLauncher  /*extends Canvas */
 	public static final int SIZE_Y = 1000;
 	public static final double TIME = 999;
 	public static final int NUM_ATOMS = 1;
-	public static final int AVERAGE_SPEED = 75;
+	public static final int AVERAGE_SPEED = 75; // must be above one
 
 	public static void main(String[] args) 
 	{
@@ -53,18 +53,11 @@ public class SimulationLauncher  /*extends Canvas */
 	
 		while (currentTime < TIME)
 		{
-//			creates a hashmap for all atoms with their own corosponding hashmap to their wall collisions
-			HashMap<Atom, HashMap<String,Double>> allWallCollisions = new HashMap<Atom, HashMap<String,Double>>(NUM_ATOMS);
+			HashMap<Atom, Double> collisionsWall = makeHashMapWall(atomArr);
 			
-			
-			
-			for (Atom atom : atomArr)
-			{
-				allWallCollisions.put(atom, makeHashMapWall(atom));
-			}
 //			paint(g);
 			
-			int pos = findLeast(wallCollisionTimes);
+			Atom pos = findLeast(allWallCollisions);
 			update(a, arr, pos);
 			currentTime = currentTime + arr[pos];
 			print (a);
@@ -74,15 +67,50 @@ public class SimulationLauncher  /*extends Canvas */
 
 	}
 	
-	public static HashMap<String, Double> makeHashMapWall(Atom a)
-	{                                                  
-		HashMap<String, Double> h = new HashMap<String, Double>(4);
-		h.put("left", collisionLeftWall(a));
-		h.put("right", collisionRightWall(a));
-		h.put("top", collisionTopWall(a));
-		h.put("base", collisionBaseWall(a));
+	
+	
+	
+	public static HashMap<Atom, Double> makeHashMapWall(Atom[] atoms)
+	{           
+		double shortest = SIZE_X + SIZE_Y; //because speed will be above 1, this will be longer than any other distance time. 
+		HashMap<Atom, Double> h = new HashMap<Atom, Double>();
+		for (Atom a : atoms)
+		{
+			HashMap<String, Double> times = new HashMap<String, Double>();
+			times.put("left", collisionLeftWall(a));
+			times.put("right", collisionRightWall(a));
+			times.put("top", collisionTopWall(a));
+			times.put("base", collisionBaseWall(a));
+			String side = findLeast (times);
+			a.setCloseWall(side);
+			h.put(a, times.get(side));
+		}
 		return h;
 	}
+	
+	
+	public static String findLeast(HashMap<String, Double> h)
+	{
+//		returns the atom with the smallest time until collision with any wall
+		String smallestKey = "left";
+		if (h.get(smallestKey) <= 0)
+		{
+			smallestKey = "right";
+//			ensures that it starts with a positive number
+//			if it has already hit left, it will not have hit the right. 
+		}
+		for (Map.Entry<String,Double> entry : h.entrySet()) 
+		{
+//            System.out.println("Key = " + entry.getKey() +
+//                             ", Value = " + entry.getValue());
+			if (entry.getValue() > 0 && entry.getValue() < h.get(smallestKey))
+			{
+				smallestKey = entry.getKey();
+			}
+		}
+		return smallestKey;
+	}
+
 //	
 //    public void paint(Graphics g) {
 //        g.fillOval(100, 100, 200, 200);
@@ -153,27 +181,7 @@ public class SimulationLauncher  /*extends Canvas */
 	{
 		return (-a.getVector().getTail().getY() + a.getSize()) / a.getVector().getYMag();
 	} 
-	public static String findLeast(HashMap<String, Double> h)
-	{
-		String smallestKey = "left";
-		if (h.get(smallestKey) <= 0)
-		{
-			smallestKey = "right";
-//			ensures that it starts with a positive number
-//			if it has already hit left, it will not have hit the right. 
-		}
-		
-		for (Map.Entry<String,Double> entry : h.entrySet()) 
-		{
-            System.out.println("Key = " + entry.getKey() +
-                             ", Value = " + entry.getValue());
-			if (entry.getValue() > 0 && entry.getValue() < h.get(smallestKey))
-			{
-				smallestKey = entry.getKey();
-			}
-		}
-		return smallestKey;
-	}
+	
 	
 	public static void print (double[] arr)
 	{

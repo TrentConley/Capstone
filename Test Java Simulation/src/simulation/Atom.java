@@ -4,6 +4,7 @@ public class Atom
 {
 	private final int SIZE = 5; //radius
 	private Vector v;
+	private String closeWall; // wall that it will impact the soonest
 	public Atom (Vector v)
 	{
 		this.v = new Vector(v.getXMag(), v.getYMag(), v.getTail());
@@ -22,8 +23,17 @@ public class Atom
 	{
 		return SIZE;
 	}
+	public void setCloseWall(String closeWallIn)
+	{
+		this.closeWall = closeWallIn;
+	}
+	public String getCloseWall()
+	{
+		return closeWall;
+	}
 	public String toString()
 	{
 		return this.v.toString() + " Size: " + Integer.toString(SIZE);
 	}
+	
 }
