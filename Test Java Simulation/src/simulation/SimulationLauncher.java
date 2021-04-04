@@ -17,7 +17,7 @@ public class SimulationLauncher  /*extends Canvas */
 	public static final int SIZE_X = 1000;
 	public static final int SIZE_Y = 1000;
 	public static final double TIME = 999;
-	public static final int NUM_ATOMS = 1;
+	public static final int NUM_ATOMS = 2;
 	public static final int AVERAGE_SPEED = 75; // must be above one
 
 	public static void main(String[] args) 
@@ -37,19 +37,11 @@ public class SimulationLauncher  /*extends Canvas */
 		
 //		double xMag = 37;
 //		double yMag = 76;
-		double xPos = Math.random()*SIZE_X ;
-		double yPos = 50;
-//		If i want to extend it to many atoms are in the simulation, I need to implement randomness.
-
-		double n = Math.random()*Math.PI*2; //gets angle between 0 and 2pi
-		double xMag = Math.cos(n)*AVERAGE_SPEED;
-		double yMag = Math.sin(n)*AVERAGE_SPEED; // now both are scaled appropriately
 		double currentTime = 0;
 		
-		Coordinates c = new Coordinates (xPos, yPos);
-		Atom a = new Atom(new Vector(xMag, yMag, c));
-		Atom[] atomArr = new Atom[1];
-		atomArr[0] = a;
+		
+		Atom[] atomArr = generateAtoms(NUM_ATOMS);
+		
 	
 		while (currentTime < TIME)
 		{
@@ -57,17 +49,38 @@ public class SimulationLauncher  /*extends Canvas */
 			
 //			paint(g);
 			
-			Atom pos = findLeast(allWallCollisions);
-			update(a, arr, pos);
-			currentTime = currentTime + arr[pos];
-			print (a);
+			double timeCollision = findleastCollectiveAtoms(collisionsWall);
+			update(timeCollision, atomArr, collisionsWall);
+			currentTime = currentTime + timeCollision;
+			print (atomArr);
 		}
 	
 		// TODO Auto-generated method stub
 
 	}
 	
+	public static Atom[] generateAtoms(int numAtoms)
+	{
+		Atom[] atomArr = new Atom[numAtoms];
+		for (int i = 0; i < numAtoms; i++)
+		{
+			double xPos = Math.random()*SIZE_X;
+			double yPos = Math.random()*SIZE_Y;
+//			If i want to extend it to many atoms are in the simulation, I need to implement randomness.
 
+			double n = Math.random()*Math.PI*2; //gets angle between 0 and 2pi
+			double xMag = Math.cos(n)*AVERAGE_SPEED;
+			double yMag = Math.sin(n)*AVERAGE_SPEED; // now both are scaled appropriately
+
+			
+
+			Coordinates c = new Coordinates (xPos, yPos);
+			Atom a = new Atom(new Vector(xMag, yMag, c));
+			atomArr[i] = a;
+		}
+		
+		return atomArr;
+	}
 	
 	public static HashMap<Atom, Double> makeHashMapWall(Atom[] atoms)
 	{           
@@ -132,56 +145,72 @@ public class SimulationLauncher  /*extends Canvas */
 //    public void paint(Graphics g) {
 //        g.fillOval(100, 100, 200, 200);
 //    }
-	public static void update(Atom a, HashMap<String, Double> h)
+	public static void update(double timeElapsed, Atom[] arr, HashMap<Atom, Double> h)
 	{
-		String leastKey = findLeast(h);
 		double newXPos;
 		double newYPos;
-		if (h.get()) 
+		for (Atom a : arr)
 		{
-//			going to hit the right or left wall
-			double newXPos;
-			double newYPos = a.getVector().getTail().getY() + arr[pos]*a.getVector().getYMag();
-			
-			
-//			shouldn't it just be the same but in the other direction?
-			
-			if (pos == 0)
-			{
-//				collision with the left wall
-				newXPos = a.getSize();
+			if (h.get(a) == timeElapsed)
+			{ //collision case atom
+				if (a.getCloseWall().equals("left"))
+				{
+					newYPos = a.getVector().getTail().getY() + timeElapsed*a.getVector().getYMag();
+					newXPos = a.getSize();
+					a.setVector(new Vector(
+							-a.getVector().getXMag(), 
+							a.getVector().getYMag(), 
+							new Coordinates(newXPos, newYPos))); // sets the vector in opposite direction
+				}
+				else if (a.getCloseWall().equals("right"))
+				{
+					newYPos = a.getVector().getTail().getY() + timeElapsed*a.getVector().getYMag();
+					newXPos = SIZE_X - a.getSize();
+					a.setVector(new Vector(
+							-a.getVector().getXMag(), 
+							a.getVector().getYMag(), 
+							new Coordinates(newXPos, newYPos))); // sets the vector in opposite direction
+				}
+				else if (a.getCloseWall().equals("base"))
+				{
+					newYPos = a.getSize();
+					newXPos = a.getVector().getTail().getX() + timeElapsed*a.getVector().getXMag();
+					a.setVector(
+							new Vector(a.getVector().getXMag(), 
+							-a.getVector().getYMag(), 
+							new Coordinates(newXPos, newYPos)));
+				}
+				else if (a.getCloseWall().equals("top"))
+				{
+					newYPos = SIZE_Y - a.getSize();
+					newXPos = a.getVector().getTail().getX() + timeElapsed*a.getVector().getXMag();
+					a.setVector(
+							new Vector(a.getVector().getXMag(), 
+							-a.getVector().getYMag(), 
+							new Coordinates(newXPos, newYPos)));
+				}
+				else
+				{
+					print("Houston we've got a problem");
+					
+				}	
+						
 			}
 			else
 			{
-				newXPos = SIZE_X - a.getSize();
+				//for all other atoms
+				newXPos = a.getVector().getTail().getX() + timeElapsed*a.getVector().getXMag();
+				newYPos = a.getVector().getTail().getY() + timeElapsed*a.getVector().getYMag();
+				a.setVector(new Vector(
+						a.getVector().getXMag(),
+						a.getVector().getYMag(),
+						new Coordinates (newXPos, newYPos)));
 			}
-			a.setVector(new Vector(
-					-a.getVector().getXMag(), 
-					a.getVector().getYMag(), 
-					new Coordinates(newXPos, newYPos))); // sets the vector in opposite direction
-//			going to hit the right or the left 
-			return;
 		}
-		double newY;
-		if (pos == 3)
-		{
-			
-			newY = a.getSize();
-		}
-		else
-		{
-			newY = SIZE_Y - a.getSize();
-		}
-		double newX = a.getVector().getTail().getX() + arr[pos]*a.getVector().getXMag();
 
-		a.setVector(
-				new Vector(a.getVector().getXMag(), 
-				-a.getVector().getYMag(), 
-				new Coordinates(newX, newY)));
-		
-		return;
 	}
 	
+	//these are times until collision with walls
 	public static double collisionLeftWall(Atom a)
 	{
 		return (-a.getVector().getTail().getX() + a.getSize())/ a.getVector().getXMag();
@@ -222,5 +251,13 @@ public class SimulationLauncher  /*extends Canvas */
 	public static void print (int i)
 	{
 		System.out.println(i);
+	}
+	public static void print(Atom[] arr)
+	{
+		for (int i =0; i < arr.length; i ++)
+		{
+			print("This is atom number " + Integer.toString(i));
+			print(arr[i]);
+		}
 	}
 }
