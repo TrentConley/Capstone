@@ -67,13 +67,12 @@ public class SimulationLauncher  /*extends Canvas */
 
 	}
 	
-	
-	
+
 	
 	public static HashMap<Atom, Double> makeHashMapWall(Atom[] atoms)
 	{           
 		double shortest = SIZE_X + SIZE_Y; //because speed will be above 1, this will be longer than any other distance time. 
-		HashMap<Atom, Double> h = new HashMap<Atom, Double>();
+		HashMap<Atom, Double> h = new HashMap<Atom, Double>(); //hashmap with each atom and their respective shortest times until collision.
 		for (Atom a : atoms)
 		{
 			HashMap<String, Double> times = new HashMap<String, Double>();
@@ -81,15 +80,33 @@ public class SimulationLauncher  /*extends Canvas */
 			times.put("right", collisionRightWall(a));
 			times.put("top", collisionTopWall(a));
 			times.put("base", collisionBaseWall(a));
-			String side = findLeast (times);
+			String side = findLeastIndivitualAtom(times);
 			a.setCloseWall(side);
 			h.put(a, times.get(side));
+			if (times.get(side) < shortest)
+			{
+				shortest = times.get(side);
+			}
 		}
 		return h;
 	}
 	
+	public static double findleastCollectiveAtoms(HashMap<Atom, Double> h)
+	{
+
+		double shortestTime = SIZE_X + SIZE_Y; //dangerous setting it to 0
+		for (Map.Entry<Atom, Double> entry : h.entrySet())
+		{
+			if (shortestTime > entry.getValue())
+			{
+				shortestTime = entry.getValue();
+			}
+		}
+		return shortestTime;
+	}
 	
-	public static String findLeast(HashMap<String, Double> h)
+	// finds the shortest path to collision with particular wall. 
+	public static String findLeastIndivitualAtom(HashMap<String, Double> h)
 	{
 //		returns the atom with the smallest time until collision with any wall
 		String smallestKey = "left";
