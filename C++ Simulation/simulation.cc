@@ -7,7 +7,9 @@ using namespace std;
 
 int main (int argc, char** argv)
 {
-    cout << "hello world" << endl;
+    b2Vec2 gravity(0.0f, -10.0f);
+    b2World world(gravity);
+    cout << "hello world" << endl; 
     return 0; 
 }
 
