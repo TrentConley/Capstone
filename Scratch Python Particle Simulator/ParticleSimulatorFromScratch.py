@@ -49,10 +49,12 @@ class GasParticle:
 		return ("Center: " + "X coords: " + str(self.xpos) + " Y coords: " + str(self.ypos) +
 			"\nX vector: " + str(self.xvel) + " Y vector: " + str(self.yvel) + 
 			"\nRadius: " + str(self.radius))
+	def calculate_interactions(self, g):
+		pass
 
 
 
-class SolidParticle:
+class TeethParticles:
 	CONST_ATTRACTION = 0 # for gasses or fixed points
 	CONST_REPULSION = 40
 	A = 5.4
@@ -67,6 +69,7 @@ class SolidParticle:
 		self.yvel = yvel
 		self.radius = radius
 	def calculate_interactions(self, s):
+
 		pass
 		# s is solid that it is interactin with 
 
@@ -86,8 +89,11 @@ class FixedParticle:
 
 def main(): 
 # creates every particle with a random position
-	newyet = SolidParticle()
-	every_particle = create_gas_particles() + create_solid_particles() + create_fixed_particles()
+	newyet = TeethParticles()
+	gas_particles = create_gas_particles()
+	teeth_particles = create_teeth_particles()
+	fixed_particles = create_fixed_particles()
+	every_particle = gas_particles + teeth_particles + fixed_particles
 
 	grid = [[list() for y in range (grid_y)] for x in range (grid_x)] 
 	fill_grid(g = grid, ep = every_particle)
@@ -128,10 +134,10 @@ def create_gas_particles():
 		yvel = random.uniform(-1,1)*INITIAL_SPEED) 
 	for i in range (0, NUMBER_PARTICLES)]
 
-def create_solid_particles():
+def create_teeth_particles():
 	a = []
 	for x in range (0, 10):
-		a = a + [SolidParticle(xpos = (8+x*0.1), ypos = (5+y*0.1)) for y in range(0, 10)]
+		a = a + [TeethParticles(xpos = (8+x*0.1), ypos = (5+y*0.1)) for y in range(0, 10)]
 	return a
 def create_fixed_particles():
 	return []
@@ -177,15 +183,15 @@ def update_forces_from_particles(g = None, p = None):
 						distance = (difference_x**2 + difference_y**2)**0.5 # will be used for weighin calculations, simple pythag
 						force_attraction = 0
 						force_repulsion = 0
-						if (not (type(p) == SolidParticle and type(influential_particle) == SolidParticle)):
+						if (not (type(p) == TeethParticles and type(influential_particle) == TeethParticles)):
 							# now we have a particle p that we can use
 							force_attraction = type(p).CONST_ATTRACTION*(1/distance)
 							force_repulsion = -type(p).CONST_REPULSION*(1/(REPUSION_SHIFT+distance**2))
 							
 
 						else:
-							force_attraction = SolidParticle.A/(SolidParticle.S*distance + SolidParticle.C) 
-							force_repulsion = SolidParticle.B/((SolidParticle.S*distance)**2 + SolidParticle.C)
+							force_attraction = TeethParticles.A/(TeethParticles.S*distance + TeethParticles.C) 
+							force_repulsion = TeethParticles.B/((TeethParticles.S*distance)**2 + TeethParticles.C)
 						x_dir = 1 # direction of x attraction and repulsion, negative to left and attraction to the right
 						if (difference_x > 0):
 							x_dir = -1
@@ -203,7 +209,7 @@ def update_forces_from_particles(g = None, p = None):
 
 							# \frac{a}{\left(x+c\right)}-\frac{b}{x^{2}+c} equation govering solid solid interactions
 							# created graph found here https://www.desmos.com/calculator/5ivqrz8tfl
-	# elif (type(p) == SolidParticle):
+	# elif (type(p) == TeethParticles):
 
 	"""
 				if (distance <= (radius + radius2)):
