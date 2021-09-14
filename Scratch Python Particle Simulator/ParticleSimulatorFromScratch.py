@@ -109,7 +109,6 @@ class GasParticle:
 		return [[g[x][y] for y in range(y, y_upper)] for x in range(x_lower, x_upper)] # particle matrix of influential particles stores in lists as cells
 
 
-
 class TeethParticles:
 	CONST_ATTRACTION = 0 # for gasses or fixed points
 	CONST_REPULSION = 40
