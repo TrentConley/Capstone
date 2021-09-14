@@ -33,7 +33,7 @@ REPUSION_SHIFT = 0.5
 
 PLOTTING_COLOR = 'black'
 
-INFLUENCE_DISTANCE = 4
+INFLUENCE_DISTANCE = 5
 
 class GasParticle:
 	CONST_ATTRACTION = 0 # assuming it is a gas with no attractions
@@ -162,7 +162,6 @@ class FixedParticle:
 
 def main(): 
 # creates every particle with a random position
-	newyet = TeethParticles()
 	gas_particles = create_gas_particles()
 	teeth_particles = create_teeth_particles()
 	fixed_particles = create_fixed_particles()
