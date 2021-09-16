@@ -1,4 +1,5 @@
-a = ['a', 'b', 'c']
-b = ['d', 'e', 'f']
-c = a + b
-print (c)
+import numpy as np
+xvel = 2
+yvel = 3
+a = np.array((xvel, yvel))
+print (a[0])
