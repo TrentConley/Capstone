@@ -9,7 +9,7 @@ from matplotlib.animation import FuncAnimation
 
 # particle simulator: https://www.youtube.com/watch?v=HWSKS2rD44g
 
-PARTICLE_RADIUS = 1
+PARTICLE_RADIUS = 0.25
 NUMBER_PARTICLES = 20
 SIZE_SIMULATION_X = 10
 SIZE_SIMULATION_Y = 10
@@ -38,7 +38,6 @@ INFLUENCE_DISTANCE = 5
 class GasParticle:
 	CONST_ATTRACTION = 0 # assuming it is a gas with no attractions
 	CONST_REPULSION = 40
-	r = 2
 
 	def __init__ (self, xpos = 0, ypos = 0, xvel = 0, yvel = 0, radius = PARTICLE_RADIUS):
 		# xpos and ypos show location of center of particle, 
@@ -48,6 +47,7 @@ class GasParticle:
 		self.yvel = yvel
 		self.radius = radius
 		self.v = np.array((xvel, yvel))
+		self.r = np.array((xpos, ypos))
 	def __str__ (self):
 		return ("Center: " + "X coords: " + str(self.xpos) + " Y coords: " + str(self.ypos) +
 			"\nX vector: " + str(self.xvel) + " Y vector: " + str(self.yvel) + 
@@ -59,14 +59,13 @@ class GasParticle:
             velocities.
 
             """
-            print ('hit')
             m1, m2 = self.radius**2, p2.radius**2
             M = m1 + m2
             r1, r2 = self.r, p2.r
             d = np.linalg.norm(r1 - r2)**2
             v1, v2 = self.v, p2.v
             u1 = v1 - 2*m2 / M * np.dot(v1-v2, r1-r2) / d * (r1 - r2)
-            u2 = v2 - 2*m1 / M * np.dot(v2-v1, r2-r1) / d * (r2 - r1)
+            # u2 = v2 - 2*m1 / M * np.dot(v2-v1, r2-r1) / d * (r2 - r1)
             self.v = u1
             self.xvel = self.v[0]
             self.yvel = self.v[1]
@@ -83,7 +82,7 @@ class GasParticle:
 							difference_x = self.xpos - influential_particle.xpos
 							difference_y = self.ypos - influential_particle.ypos
 							distance = (difference_x**2 + difference_y**2)**0.5 # will be used for weighin calculations, simple pythag
-							if (distance > self.radius + influential_particle.radius):
+							if (distance < self.radius + influential_particle.radius):
 								self.change_velocities(influential_particle)
 							# force_attraction = 0
 
@@ -234,8 +233,8 @@ def create_gas_particles():
 
 def create_teeth_particles():
 	a = []
-	for x in range (0, 10):
-		a = a + [TeethParticles(xpos = (8+x*0.1), ypos = (5+y*0.1)) for y in range(0, 10)]
+	# for x in range (0, 10):
+	# 	a = a + [TeethParticles(xpos = (8+x*0.1), ypos = (5+y*0.1)) for y in range(0, 10)]
 	return a
 def create_pawl_particles():
 	return []
@@ -304,6 +303,7 @@ def update_position(in_particle = None, g = None):
 	g[math.floor(new_x)][math.floor(new_y)].append(in_particle)
 	in_particle.xpos = new_x
 	in_particle.ypos = new_y
+	in_particle.r = np.array((new_x, new_y))
 
 	pass
 
