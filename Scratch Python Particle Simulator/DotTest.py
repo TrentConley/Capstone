@@ -9,7 +9,11 @@ from matplotlib.animation import FuncAnimation
 
 # particle simulator: https://www.youtube.com/watch?v=HWSKS2rD44g
 
+<<<<<<< HEAD
 PARTICLE_RADIUS = 0.5
+=======
+PARTICLE_RADIUS = 0.25
+>>>>>>> 91b5f6e494a8e30759c39ca6fd90c1728462600e
 NUMBER_PARTICLES = 20
 SIZE_SIMULATION_X = 10
 SIZE_SIMULATION_Y = 10
@@ -64,7 +68,7 @@ class GasParticle:
             d = np.linalg.norm(r1 - r2)**2
             v1, v2 = self.v, p2.v
             u1 = v1 - 2*m2 / M * np.dot(v1-v2, r1-r2) / d * (r1 - r2)
-            u2 = v2 - 2*m1 / M * np.dot(v2-v1, r2-r1) / d * (r2 - r1)
+            # u2 = v2 - 2*m1 / M * np.dot(v2-v1, r2-r1) / d * (r2 - r1)
             self.v = u1
             self.xvel = self.v[0]
             self.yvel = self.v[1]
