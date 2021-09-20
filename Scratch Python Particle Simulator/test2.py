@@ -1,5 +1,10 @@
-import numpy as np
-xvel = 2
-yvel = 3
-a = np.array((xvel, yvel))
-print (a[0])
+import requests
+from bs4 import BeautifulSoup
+
+URL = "https://www.feynmanlectures.caltech.edu/I_46.html"
+# "https://www.sagedining.com/sites/ensworthschool/menu"
+page = requests.get(URL)
+
+soup = BeautifulSoup(page.content, "html.parser")
+
+print (soup)

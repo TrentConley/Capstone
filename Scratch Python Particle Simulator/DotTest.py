@@ -36,8 +36,7 @@ PLOTTING_COLOR = 'black'
 INFLUENCE_DISTANCE = math.ceil(PARTICLE_RADIUS*2.1) #  
 
 class GasParticle:
-	CONST_ATTRACTION = 0 # assuming it is a gas with no attractions
-	CONST_REPULSION = 40
+
 
 	def __init__ (self, xpos = 0, ypos = 0, xvel = 0, yvel = 0, radius = PARTICLE_RADIUS):
 		# xpos and ypos show location of center of particle, 
@@ -137,37 +136,61 @@ class GasParticle:
 
 
 class TeethParticle:
-	CONST_ATTRACTION = 0 # for gasses or fixed points
-	CONST_REPULSION = 40
+	SPRING_CONSTANT = 1
+	STRETCH_DISTANCE = 0.3
 	A = 5.4
 	B = 7.7
 	C = 0.8
 	S = 12 # S for scaling the graph along the x axis
 	# from graph here https://www.desmos.com/calculator/5ivqrz8tfl
-	def __init__(self, xpos = 0, ypos = 0, xvel = 0, yvel = 0, radius = 1):
+	def __init__(self, xpos = 0, ypos = 0, xvel = 0, yvel = 0, radius = 1, neighbors = []):
 		self.xpos = xpos
 		self.ypos = ypos
+		self.r = np.array((xpos, ypos))
 		self.xvel = xvel
 		self.yvel = yvel
+		self.v = np.array((xvel, yvel))
 		self.radius = radius
+		self.neighbors = neighbors
 	def update_forces_from_particles(self, g):
+		for p in self.neighbors:
+			difference_x = self.xpos - p.xpos
+			difference_y = self.ypos - p.ypos
+			distance = math.sqrt((difference_x**2 + difference_y**2))	
+			distance_past_stretch = distance - STRETCH_DISTANCE
+			if (distance_past_stretch > 0):
+				v1 = np.array((
+					self.xvel - (difference_x*SPRING_CONSTANT*TIME_STEP), # change in x velocity due to spring
+					self.yvel - (difference_y*SPRING_CONSTANT*TIME_STEP) # change in y velocity due to spring
+					))
+				v2 = np.array((
+					p.xvel + (difference_x*SPRING_CONSTANT*TIME_STEP), # change in x velocity due to spring,
+					p.yvel + (difference_y*SPRING_CONSTANT*TIME_STEP) # change in y velocity due to spring
+					))
+				self.v = v1
+				self.xvel = self.v[0]
+				self.yvel = self.v[1]
+				p.v = v2
+				p.xvel = p.v[0]
+				p.yvel = p.v[1]
 
-		particle_mat = self.get_influential_particles(g)
+				# change the velocites as per Hooke's Law
+			# calculate the spring interactions between particles
+
+		particle_mat = get_influential_particles(p =self, g = g)
 		if (not type(self) == FixedParticle):
 
 			for row in particle_mat:
 				for col in row:
 					for influential_particle in col:
-						if (not influential_particle == self):
+						# teeth particles will still elastically collide. 
+						if ((not influential_particle == self)):
+							difference_x = self.xpos - influential_particle.xpos
+							difference_y = self.ypos - influential_particle.ypos
+							distance = math.sqrt((difference_x**2 + difference_y**2)) 
+							if (distance < self.radius + influential_particle.radius):
+								elastic_collision(self, influential_particle)
 
-							if (not type(influential_particle) == TeethParticle):
-								difference_x = self.xpos - influential_particle.xpos
-								difference_y = self.ypos - influential_particle.ypos
-								distance = (difference_x**2 + difference_y**2)**0.5 
-								if (distance < self.radius + influential_particle.radius):
-									elastic_collision(self, influential_particle)
-							else:
-								print()
 
 		# treat interactinos among teeth particles, treat all else like elastic collisions. 0
 
@@ -257,8 +280,9 @@ def create_gas_particles():
 def create_teeth_particles():
 	a = []
 	# for x in range (0, 10):
-	# 	a = a + [TeethParticle(xpos = (8+x*0.1), ypos = (5+y*0.1)) for y in range(0, 10)]
+	a = [TeethParticle(xpos = 8, ypos = 5+y*0.1) for y in range(0, 10)]
 	return a
+	# return [TeethParticle(xpos = 8, ypos = 5+y*0.1) for y in range(0, 10)]
 def create_pawl_particles():
 	return []
 def create_fixed_particles():
@@ -345,7 +369,6 @@ def print_every_particle(ep):
 		print (p)
 
 def elastic_collision(p1, p2):
-
 	"""
     Particles self and p2 have collided elastically: update their
     velocities.
