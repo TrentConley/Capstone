@@ -11,13 +11,13 @@ from matplotlib.animation import FuncAnimation
 
 PARTICLE_RADIUS = 0.5
 NUMBER_PARTICLES = 20
-SIZE_SIMULATION_X = 10
-SIZE_SIMULATION_Y = 10
+SIZE_SIMULATION_X = 100
+SIZE_SIMULATION_Y = 100
 
 INITIAL_SPEED = 10
 TIME_STEP = 0.01
-TOTAL_TIME = 5
-
+TOTAL_TIME = 2.5
+# need to include grid partitions so that it can be more precise than just 1. 
 grid_x = SIZE_SIMULATION_X
 grid_y = SIZE_SIMULATION_Y
 REPUSION_SHIFT = 0.5
@@ -137,7 +137,7 @@ class GasParticle:
 
 class TeethParticle:
 	SPRING_CONSTANT = 1
-	STRETCH_DISTANCE = 0.3
+	STRETCH_DISTANCE = 1
 	A = 5.4
 	B = 7.7
 	C = 0.8
@@ -154,18 +154,19 @@ class TeethParticle:
 		self.neighbors = neighbors
 	def update_forces_from_particles(self, g):
 		for p in self.neighbors:
+
 			difference_x = self.xpos - p.xpos
 			difference_y = self.ypos - p.ypos
 			distance = math.sqrt((difference_x**2 + difference_y**2))	
-			distance_past_stretch = distance - STRETCH_DISTANCE
+			distance_past_stretch = distance - TeethParticle.STRETCH_DISTANCE
 			if (distance_past_stretch > 0):
 				v1 = np.array((
-					self.xvel - (difference_x*SPRING_CONSTANT*TIME_STEP), # change in x velocity due to spring
-					self.yvel - (difference_y*SPRING_CONSTANT*TIME_STEP) # change in y velocity due to spring
+					self.xvel - (difference_x*TeethParticle.SPRING_CONSTANT*TIME_STEP), # change in x velocity due to spring
+					self.yvel - (difference_y*TeethParticle.SPRING_CONSTANT*TIME_STEP) # change in y velocity due to spring
 					))
 				v2 = np.array((
-					p.xvel + (difference_x*SPRING_CONSTANT*TIME_STEP), # change in x velocity due to spring,
-					p.yvel + (difference_y*SPRING_CONSTANT*TIME_STEP) # change in y velocity due to spring
+					p.xvel + (difference_x*TeethParticle.SPRING_CONSTANT*TIME_STEP), # change in x velocity due to spring,
+					p.yvel + (difference_y*TeethParticle.SPRING_CONSTANT*TIME_STEP) # change in y velocity due to spring
 					))
 				self.v = v1
 				self.xvel = self.v[0]
@@ -177,7 +178,7 @@ class TeethParticle:
 				# change the velocites as per Hooke's Law
 			# calculate the spring interactions between particles
 
-		particle_mat = get_influential_particles(p =self, g = g)
+		particle_mat = get_influential_particles(p =self, g = g, d = 2*self.radius)
 		if (not type(self) == FixedParticle):
 
 			for row in particle_mat:
@@ -277,11 +278,26 @@ def create_gas_particles():
 		yvel = random.uniform(-1,1)*INITIAL_SPEED) 
 	for i in range (0, NUMBER_PARTICLES)]
 
-def create_teeth_particles():
-	a = []
-	# for x in range (0, 10):
-	a = [TeethParticle(xpos = 8, ypos = 5+y*0.1) for y in range(0, 10)]
-	return a
+# xpart, ypart are partitions for how many particles per span in x or y direction
+def create_teeth_particles(xstart = 50, ystart = 50, xpart = 10, xspan = 10, ypart = 10, yspan = 10):
+	a = [None] * xpart
+	for x in range (0, xpart):
+		a[x] = [TeethParticle(xpos = xstart + x*(xspan/xpart), ypos = ystart +y*(yspan/ypart)) for y in range(0, ypart)]
+	for x in range (0, xpart):
+		for y in range(0, ypart):
+			if (not x == 0):
+				a[x][y].neighbors.append(a[x-1][y])
+			if (not x == xpart -1):
+				a[x][y].neighbors.append(a[x+1][y])
+				pass
+			if not (y == 0):
+				a[x][y].neighbors.append(a[x][y-1])
+			if not (y == ypart - 1):
+				a[x][y].neighbors.append(a[x][y+1])
+	aa = []
+	for x in a:
+		aa.extend(x)
+	return aa
 	# return [TeethParticle(xpos = 8, ypos = 5+y*0.1) for y in range(0, 10)]
 def create_pawl_particles():
 	return []
@@ -290,28 +306,27 @@ def create_fixed_particles():
 	# return [FsixedParticle(xpos = 7, ypos = y*0.3) for y in range(0,33)]
 	 # creates vertical wall
 
-def get_influential_particles(g = None, p = None):
+def get_influential_particles(g = None, p = None, d = INFLUENCE_DISTANCE):
 	x = math.floor(p.xpos)
 	y = math.floor(p.ypos)
 	
 
 	#edge cases for finding what range of particles are influential
-	x_lower = x - INFLUENCE_DISTANCE
-	if (x < INFLUENCE_DISTANCE):
+	x_lower = x - d
+	if (x < d):
 		x_lower = 0
 
-	y_lower = y - INFLUENCE_DISTANCE
-	if (y < INFLUENCE_DISTANCE):
+	y_lower = y - d
+	if (y < d):
 		y_lower = 0
 
-	x_upper = x + INFLUENCE_DISTANCE
-	if (x + INFLUENCE_DISTANCE > SIZE_SIMULATION_X):
+	x_upper = x + d
+	if (x + d > SIZE_SIMULATION_X):
 		x_upper = SIZE_SIMULATION_X 
 
-	y_upper = y + INFLUENCE_DISTANCE
-	if (y + INFLUENCE_DISTANCE > SIZE_SIMULATION_Y):
+	y_upper = y + d
+	if (y + d > SIZE_SIMULATION_Y):
 		y_upper = SIZE_SIMULATION_Y
-
 
 	return [[g[x][y] for y in range(y, y_upper)] for x in range(x_lower, x_upper)] # particle matrix of influential particles stores in lists as cells
 
@@ -390,7 +405,5 @@ def elastic_collision(p1, p2):
 
 	
 main()
-
-
 
 
