@@ -9,7 +9,7 @@ from matplotlib.animation import FuncAnimation
 
 # particle simulator: https://www.youtube.com/watch?v=HWSKS2rD44g
 
-PARTICLE_RADIUS = 0.5
+PARTICLE_RADIUS = 0.1
 NUMBER_PARTICLES = 20
 SIZE_SIMULATION_X = 100
 SIZE_SIMULATION_Y = 100
@@ -137,7 +137,7 @@ class GasParticle:
 
 class TeethParticle:
 	SPRING_CONSTANT = 1
-	STRETCH_DISTANCE = 1
+	STRETCH_DISTANCE = 0.5
 	A = 5.4
 	B = 7.7
 	C = 0.8
@@ -153,6 +153,8 @@ class TeethParticle:
 		self.radius = radius
 		self.neighbors = neighbors
 	def update_forces_from_particles(self, g):
+		# if len(self.neighbors) > 4:
+		# 	print('you messed up')
 		for p in self.neighbors:
 
 			difference_x = self.xpos - p.xpos
@@ -283,17 +285,25 @@ def create_teeth_particles(xstart = 50, ystart = 50, xpart = 10, xspan = 10, ypa
 	a = [None] * xpart
 	for x in range (0, xpart):
 		a[x] = [TeethParticle(xpos = xstart + x*(xspan/xpart), ypos = ystart +y*(yspan/ypart)) for y in range(0, ypart)]
+	i = 0
+	# print (len(a))
 	for x in range (0, xpart):
 		for y in range(0, ypart):
 			if (not x == 0):
-				a[x][y].neighbors.append(a[x-1][y])
+			# 	print (a[x][y].neighbors)
+			# 	print (i)
+			# 	i = i+1
+				# print (str(a[x][y]) + "this is one")
+				a[x][y].neighbors = a[x][y].neighbors + [a[x-1][y]]
 			if (not x == xpart -1):
-				a[x][y].neighbors.append(a[x+1][y])
-				pass
+				# a[x][y].neighbors.append(a[x+1][y])
+				a[x][y].neighbors = a[x][y].neighbors + [a[x-1][y]]
 			if not (y == 0):
-				a[x][y].neighbors.append(a[x][y-1])
+				# a[x][y].neighbors.append(a[x][y-1])
+				a[x][y].neighbors = a[x][y].neighbors + [a[x-1][y]]
 			if not (y == ypart - 1):
-				a[x][y].neighbors.append(a[x][y+1])
+				# a[x][y].neighbors.append(a[x][y+1])
+				a[x][y].neighbors = a[x][y].neighbors + [a[x-1][y]]
 	aa = []
 	for x in a:
 		aa.extend(x)
