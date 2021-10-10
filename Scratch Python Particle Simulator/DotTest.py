@@ -9,14 +9,14 @@ from matplotlib.animation import FuncAnimation
 
 # particle simulator: https://www.youtube.com/watch?v=HWSKS2rD44g
 
-PARTICLE_RADIUS = 0.1
+PARTICLE_RADIUS = 0.5
 NUMBER_PARTICLES = 20
 SIZE_SIMULATION_X = 100
 SIZE_SIMULATION_Y = 100
 
 INITIAL_SPEED = 10
 TIME_STEP = 0.01
-TOTAL_TIME = 2.5
+TOTAL_TIME = 10
 # need to include grid partitions so that it can be more precise than just 1. 
 grid_x = SIZE_SIMULATION_X
 grid_y = SIZE_SIMULATION_Y
@@ -33,7 +33,7 @@ REPUSION_SHIFT = 0.5
 
 PLOTTING_COLOR = 'black'
 
-INFLUENCE_DISTANCE = math.ceil(PARTICLE_RADIUS*2.1) #  
+INFLUENCE_DISTANCE = math.ceil(PARTICLE_RADIUS*2.1) # 2.1 because it is slightly larger than the max collision distance for particles
 
 class GasParticle:
 
@@ -81,7 +81,7 @@ class GasParticle:
 						if ((not influential_particle == self) and type(influential_particle) == GasParticle):
 							difference_x = self.xpos - influential_particle.xpos
 							difference_y = self.ypos - influential_particle.ypos
-							distance = (difference_x**2 + difference_y**2)**0.5 # will be used for weighin calculations, simple pythag
+							distance = (difference_x**2 + difference_y**2)**0.5 # willbe used for weighin calculations, simple pythag
 							if (distance < self.radius + influential_particle.radius):
 								elastic_collision(self, influential_particle)
 								# self.change_velocities(influential_particle)
@@ -136,14 +136,14 @@ class GasParticle:
 
 
 class TeethParticle:
-	SPRING_CONSTANT = 1
-	STRETCH_DISTANCE = 0.5
+	SPRING_CONSTANT = 2 # k in f = kx
+	STRETCH_DISTANCE = 5
 	A = 5.4
 	B = 7.7
 	C = 0.8
 	S = 12 # S for scaling the graph along the x axis
 	# from graph here https://www.desmos.com/calculator/5ivqrz8tfl
-	def __init__(self, xpos = 0, ypos = 0, xvel = 0, yvel = 0, radius = 1, neighbors = []):
+	def __init__(self, xpos = 0, ypos = 0, xvel = 0, yvel = 0, radius = PARTICLE_RADIUS, neighbors = []):
 		self.xpos = xpos
 		self.ypos = ypos
 		self.r = np.array((xpos, ypos))
@@ -154,14 +154,18 @@ class TeethParticle:
 		self.neighbors = neighbors
 	def update_forces_from_particles(self, g):
 		# if len(self.neighbors) > 4:
-		# 	print('you messed up')
+		i = 0
 		for p in self.neighbors:
-
+			print(i)
+			i = i+1
+			# for some reason the program thinks that the neighbors are beyond the stretch distance right now.
+			# forces acting upon each particle from neighbors, acting like spring. 
 			difference_x = self.xpos - p.xpos
 			difference_y = self.ypos - p.ypos
 			distance = math.sqrt((difference_x**2 + difference_y**2))	
 			distance_past_stretch = distance - TeethParticle.STRETCH_DISTANCE
 			if (distance_past_stretch > 0):
+				print('updating')
 				v1 = np.array((
 					self.xvel - (difference_x*TeethParticle.SPRING_CONSTANT*TIME_STEP), # change in x velocity due to spring
 					self.yvel - (difference_y*TeethParticle.SPRING_CONSTANT*TIME_STEP) # change in y velocity due to spring
@@ -191,8 +195,11 @@ class TeethParticle:
 							difference_x = self.xpos - influential_particle.xpos
 							difference_y = self.ypos - influential_particle.ypos
 							distance = math.sqrt((difference_x**2 + difference_y**2)) 
+							print(distance)
 							if (distance < self.radius + influential_particle.radius):
+								print("collision!")
 								elastic_collision(self, influential_particle)
+								# why are the teeth coming closer after every run? shouldnt they also be equidistanct upon initialization?
 
 
 		# treat interactinos among teeth particles, treat all else like elastic collisions. 0
@@ -281,7 +288,7 @@ def create_gas_particles():
 	for i in range (0, NUMBER_PARTICLES)]
 
 # xpart, ypart are partitions for how many particles per span in x or y direction
-def create_teeth_particles(xstart = 50, ystart = 50, xpart = 10, xspan = 10, ypart = 10, yspan = 10):
+def create_teeth_particles(xstart = 50, ystart = 50, xpart = 10, xspan = 20, ypart = 10, yspan = 20):
 	a = [None] * xpart
 	for x in range (0, xpart):
 		a[x] = [TeethParticle(xpos = xstart + x*(xspan/xpart), ypos = ystart +y*(yspan/ypart)) for y in range(0, ypart)]
@@ -316,29 +323,28 @@ def create_fixed_particles():
 	# return [FsixedParticle(xpos = 7, ypos = y*0.3) for y in range(0,33)]
 	 # creates vertical wall
 
-def get_influential_particles(g = None, p = None, d = INFLUENCE_DISTANCE):
+def get_influential_particles(g = [[]], p = None, d = INFLUENCE_DISTANCE):
 	x = math.floor(p.xpos)
 	y = math.floor(p.ypos)
 	
 
 	#edge cases for finding what range of particles are influential
-	x_lower = x - d
+	x_lower = int(x - d)
 	if (x < d):
 		x_lower = 0
 
-	y_lower = y - d
+	y_lower = int(y - d)
 	if (y < d):
 		y_lower = 0
 
-	x_upper = x + d
+	x_upper = int(x + d)
 	if (x + d > SIZE_SIMULATION_X):
 		x_upper = SIZE_SIMULATION_X 
 
-	y_upper = y + d
+	y_upper = int(y + d)
 	if (y + d > SIZE_SIMULATION_Y):
 		y_upper = SIZE_SIMULATION_Y
-
-	return [[g[x][y] for y in range(y, y_upper)] for x in range(x_lower, x_upper)] # particle matrix of influential particles stores in lists as cells
+	return [[g[x][y] for y in range(y_lower, y_upper)] for x in range(x_lower, x_upper)] # particle matrix of influential particles stores in lists as cells
 
 
 
@@ -394,6 +400,8 @@ def print_every_particle(ep):
 		print (p)
 
 def elastic_collision(p1, p2):
+	if (type(p1) == TeethParticle and type(p2) == TeethParticle):
+		print ("teeth on teeth collision")
 	"""
     Particles self and p2 have collided elastically: update their
     velocities.
