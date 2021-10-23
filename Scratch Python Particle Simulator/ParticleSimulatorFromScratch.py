@@ -160,7 +160,7 @@ class TeethParticle:
 				else:
 					theta = -math.pi/2
 			else:
-				theta = np.arctan(difference_y/difference_x) # gives angle between points
+				theta = np.arctan(difference_y/difference_x) # gives angle between points CAN USE LINEAR ALGEBRA! costheta = 
 
 			distance = math.sqrt((difference_x**2 + difference_y**2))	
 			if (distance < self.radius + p.radius):
