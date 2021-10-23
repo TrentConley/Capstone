@@ -15,8 +15,8 @@ SIZE_SIMULATION_X = 100
 SIZE_SIMULATION_Y = 100
 
 INITIAL_SPEED = 10
-TIME_STEP = 0.0001
-TOTAL_TIME = 10
+TIME_STEP = 0.01
+TOTAL_TIME = 1000
 # need to include grid partitions so that it can be more precise than just 1. 
 grid_x = SIZE_SIMULATION_X
 grid_y = SIZE_SIMULATION_Y
@@ -134,6 +134,8 @@ class GasParticle:
 
 
 class TeethParticle:
+	SPRING_REST_DISTANCE = 1.5
+	K_SPRING = 10
 	A = 1.5 #reflects nature of ionic compounds; 
 	B = 1
 	C = 12 # coeffiecint on natural log term 
@@ -145,22 +147,22 @@ class TeethParticle:
 		self.radius = radius
 		self.neighbors = neighbors
 	def update_forces_from_particles(self, g):
-		print("first time")
+
 		# if len(self.neighbors) > 4:
 		for p in self.neighbors:
 			# for some reason the program thinks that the neighbors are beyond the stretch distance right now.
 			# forces acting upon each particle from neighbors, acting like spring. 
 			difference_x = self.pos[0] - p.pos[0]
 			difference_y = self.pos[1] - p.pos[1]
-			theta = np.arctan(difference_y/difference_x) # gives angle between points
-			print(theta)
+			if (difference_x == 0):
+				if (difference_y > 0):
+					theta = math.pi/2
+				else:
+					theta = -math.pi/2
+			else:
+				theta = np.arctan(difference_y/difference_x) # gives angle between points
+
 			distance = math.sqrt((difference_x**2 + difference_y**2))	
-			print(distance)
-			print(difference_x)
-			print(difference_y)
-			print(self.pos)
-			print(p.pos)
-			quit()
 			if (distance < self.radius + p.radius):
 				elastic_collision(self, p)
 				print("not supposed to happen")
@@ -171,11 +173,13 @@ class TeethParticle:
 				# from https://www.desmos.com/calculator/mn3yfk4pgh
 			# y=\frac{B}{sx}-\frac{A}{\left(sx\right)^{2}}-\frac{1}{4}\ln\left(sx\right)\left\{x\ >0\right\}
 			# there will be too much repulsion and attraction on the tails if I don't include the ln term. 
-				attraction = TeethParticle.B/(TeethParticle.S*distance) - TeethParticle.A/((TeethParticle.S*distance)**2) - (TeethParticle.C)*np.log(TeethParticle.S*distance)
+				# attraction = (TeethParticle.B/(TeethParticle.S*distance) - TeethParticle.A/((TeethParticle.S*distance)**2) - (TeethParticle.C)*np.log(TeethParticle.S*distance))*TIME_STEP #with log
+				# attraction = (TeethParticle.B/(TeethParticle.S*distance) - TeethParticle.A/((TeethParticle.S*distance)**2))*TIME_STEP #not log
+				attraction = (distance - TeethParticle.SPRING_REST_DISTANCE)*TeethParticle.K_SPRING*TIME_STEP
 				self.v[0] += np.cos(theta)*attraction
 				self.v[1] += np.sin(theta)*attraction
-				p.v[0] += np.cos(theta)*attraction
-				p.v[1] += np.sin(theta)*attraction
+				p.v[0] += np.cos(math.pi + theta)*attraction
+				p.v[1] += np.sin(math.pi + theta)*attraction
 
 					# change the velocites as per Hooke's Law
 				# calculate the spring interactions between particles
@@ -304,15 +308,16 @@ def create_teeth_particles(xstart = 50, ystart = 50, xnumber = 10, ynumber = 10,
 			# 	i = i+1
 				# print (str(a[x][y]) + "this is one")
 				a[x][y].neighbors = a[x][y].neighbors + [a[x-1][y]]
+				print()
 			if (not x == xnumber -1):
 				# a[x][y].neighbors.append(a[x+1][y])
-				a[x][y].neighbors = a[x][y].neighbors + [a[x-1][y]]
+				a[x][y].neighbors = a[x][y].neighbors + [a[x+1][y]]
 			if not (y == 0):
 				# a[x][y].neighbors.append(a[x][y-1])
-				a[x][y].neighbors = a[x][y].neighbors + [a[x-1][y]]
+				a[x][y].neighbors = a[x][y].neighbors + [a[x][y-1]]
 			if not (y == ynumber - 1):
 				# a[x][y].neighbors.append(a[x][y+1])
-				a[x][y].neighbors = a[x][y].neighbors + [a[x-1][y]]
+				a[x][y].neighbors = a[x][y].neighbors + [a[x][y+1]]
 			print ('\n')
 			print(a[x][y].pos)
 			print ('\n')
@@ -374,7 +379,7 @@ def update_forces_from_wall(in_particle):
 	if (xpos_updated < 0 or xpos_updated > SIZE_SIMULATION_X):
 		in_particle.v[0] = in_particle.v[0]*(-1)
 
-	ypos_updated = in_particle.pos[0] + in_particle.v[1]*TIME_STEP
+	ypos_updated = in_particle.pos[1] + in_particle.v[1]*TIME_STEP
 	if (ypos_updated < 0 or ypos_updated > SIZE_SIMULATION_Y):
 		in_particle.v[1] = in_particle.v[1]*(-1)
 
@@ -385,9 +390,15 @@ def update_position(in_particle = None, g = None):
 	x = in_particle.pos[0]
 	y = in_particle.pos[1]
 	g[math.floor(x)][math.floor(y)].remove(in_particle)
+
 	new_x = x + in_particle.v[0]*TIME_STEP
 	new_y = y + in_particle.v[1]*TIME_STEP
-	g[math.floor(new_x)][math.floor(new_y)].append(in_particle)
+	try:
+		g[math.floor(new_x)][math.floor(new_y)].append(in_particle)
+	except IndexError:
+		print("x: " + str(math.floor(new_x)))
+		print("y: " + str(math.floor(new_y)))
+		print(g[new_x][new_y])
 	in_particle.pos = np.array((new_x, new_y))
 
 	pass
