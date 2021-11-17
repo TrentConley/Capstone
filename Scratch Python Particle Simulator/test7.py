@@ -176,7 +176,7 @@ class TeethParticle:
 		# there will be too much repulsion and attraction on the tails if I don't include the ln term. 
 			# attraction = (TeethParticle.B/(TeethParticle.S*distance) - TeethParticle.A/((TeethParticle.S*distance)**2) - (TeethParticle.C)*np.log(TeethParticle.S*distance))*TIME_STEP #with log
 			# attraction = (TeethParticle.B/(TeethParticle.S*distance) - TeethParticle.A/((TeethParticle.S*distance)**2))*TIME_STEP #not log
-			attraction = ((distance - TeethParticle.SPRING_REST_DISTANCE)**2)*TeethParticle.K_SPRING*TIME_STEP
+			attraction = ((distance - TeethParticle.SPRING_REST_DISTANCE)**2)*TeethParticle.K_SPRING
 			self.v[0] += np.cos(theta)*attraction
 			self.v[1] += np.sin(theta)*attraction
 			p.v[0] += np.cos(math.pi + theta)*attraction
