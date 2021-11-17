@@ -40,6 +40,9 @@ xlim = (0,size)
 ylim = (0,size)
 zlim = (0,size)
 
+# number of partitions in grid to zoom in on particle dynamics
+grid_partition = 0.4
+
 fig = plt.figure()
 ax = Axes3D(fig)
 
