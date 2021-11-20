@@ -1,3 +1,9 @@
+# axes = [0, 2, 1] first two are the planes we are graphing in, last one we are not
+
+
+
+
+
 # 3D simulation of bouncing balls
 #
 # author: Konstantin Lübeck (Embedded Systems, Universtiy of Tuebingen)
@@ -41,7 +47,7 @@ ylim = (0,size)
 zlim = (0,size)
 
 # number of partitions in grid to zoom in on particle dynamics
-grid_partition = 0.4
+grid_partition = 2
 
 fig = plt.figure()
 ax = Axes3D(fig)
@@ -52,6 +58,8 @@ ax.set_zlim(zlim)
 
 ax.view_init(elev, azim)
 
+balls = []
+
 class Ball:
     def __init__(self, xyz, v, fmt, radius = 0.1):
         self.xyz = np.array(xyz)
@@ -59,6 +67,16 @@ class Ball:
         self.radius = radius
 
         self.scatter, = ax.plot([], [], [], fmt, animated=True)
+
+    def does_elastic_collision_occur(self):
+        # here we will first check if there will be an elastic collision.
+        # first we need to get all of the potential collisions from the grid. 
+
+
+        return [False, None]
+
+    def deal_with_elastic_collision(self, b):
+        return []
 
     def update(self, grid):
         # ball hits lower x wall 
@@ -88,7 +106,9 @@ class Ball:
         # changing velocity due to acceleration of gravity
         delta_v = delta_t * ag
         self.v += delta_v
-
+        collision_info = self.does_elastic_collision_occur()
+        if (collision_info[0]):
+            self.deal_with_elastic_collision(collision_info[1])
         self.xyz += self.v
 
         # make sure the balls stay inside of the canvas
@@ -100,18 +120,36 @@ class Ball:
         self.scatter.set_xdata(self.xyz[0])
         self.scatter.set_ydata(self.xyz[1])
         self.scatter.set_3d_properties(self.xyz[2])
+    
+        
+def main():
 
 
-# generate balls with random position, velocity, and color
-balls = []
+    # generate balls with random position, velocity, and color
 
-for i in np.arange(0,num_balls):
-    xyz = np.random.rand(1,3)[0]*size
-    v = np.random.rand(1,3)[0]*0.1
-    fmt = str(colors[np.random.randint(0,len(colors))] + 'o')
-    balls.append(Ball(xyz, v, fmt))
 
-grid = [[list() for y in range (ylim[0], ylim[1])] for x in range (xlim[0], xlim[1])] # for efficient computation
+    for i in np.arange(0,num_balls):
+        xyz = np.random.rand(1,3)[0]*size
+        xyz[1] = 5 # for 2 dimensional dynamics
+        v = np.random.rand(1,3)[0]*0.1
+        v[1] = 0 # for 2 dimensional dynamics
+        fmt = str(colors[np.random.randint(0,len(colors))] + 'o')
+        balls.append(Ball(xyz, v, fmt))
+
+    grid = [[list() for y in range (ylim[0], ylim[1])] for x in range (xlim[0], xlim[1])] # for efficient computation
+    fill_grid(g = grid, ep = balls)
+
+    ani = FuncAnimation(fig, update, frames=np.arange(0,0.5,delta_t), init_func=init, interval=10, blit=True, repeat=True)
+    #ani.save('animation.gif', writer='imagemagick', fps=30) # will be huge for ORNL
+    plt.show()
+
+
+def fill_grid(g = None, ep = None):
+    # for p in ep:
+    #     x = math.floor(p.pos[0])
+    #     y = math.floor(p.pos[1])
+    #     g[x][y].append(p)
+    pass
 
 def init():
     return [] 
@@ -133,8 +171,5 @@ def update(t):
 
     return artists 
 
-ani = FuncAnimation(fig, update, frames=np.arange(0,0.5,delta_t), init_func=init, interval=10, blit=True, repeat=True)
-#ani.save('animation.gif', writer='imagemagick', fps=30) # will be huge for ORNL
-plt.show()
-
+main()
 
