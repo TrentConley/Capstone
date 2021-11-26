@@ -80,29 +80,29 @@ class particle:
 
     def update(self, grid):
         # particle hits lower x wall 
-        if self.xyz[0] <= xlim[0]:
-            self.v[0] = cor * np.abs(self.v[0])
+        # if self.xyz[0] <= xlim[0]:
+        #     self.v[0] = cor * np.abs(self.v[0])
 
-        # particle hits upper x wall
-        elif self.xyz[0] >= xlim[1]:
-            self.v[0] = - cor * np.abs(self.v[0])
+        # # particle hits upper x wall
+        # elif self.xyz[0] >= xlim[1]:
+        #     self.v[0] = - cor * np.abs(self.v[0])
 
-        # particle hits lower y wall
-        if self.xyz[1] <= ylim[0]:
-            self.v[1] = cor * np.abs(self.v[1])
+        # # particle hits lower y wall
+        # if self.xyz[1] <= ylim[0]:
+        #     self.v[1] = cor * np.abs(self.v[1])
 
-        # particle hits upper y wall
-        elif self.xyz[1] >= ylim[1]:
-            self.v[1] = - cor * np.abs(self.v[1])
+        # # particle hits upper y wall
+        # elif self.xyz[1] >= ylim[1]:
+        #     self.v[1] = - cor * np.abs(self.v[1])
 
-        # particle hits lower z wall
-        if self.xyz[2] <= zlim[0]:
-            self.v[2] = cor * np.abs(self.v[2])
+        # # particle hits lower z wall
+        # if self.xyz[2] <= zlim[0]:
+        #     self.v[2] = cor * np.abs(self.v[2])
 
-        # particle hits upper z wall
-        elif self.xyz[2] >= zlim[1]:
-            self.v[2] = - cor * np.abs(self.v[2])
-
+        # # particle hits upper z wall
+        # elif self.xyz[2] >= zlim[1]:
+        #     self.v[2] = - cor * np.abs(self.v[2])
+        update_forces_from_wall(self)
         # changing velocity due to acceleration of gravity
         delta_v = delta_t * ag
         self.v += delta_v
@@ -110,8 +110,8 @@ class particle:
         if (collision_info[0]):
             self.deal_with_elastic_collision(collision_info[1])
         update_position(in_particle = self, g = grid)
-        print("we are here")
-        quit()
+
+
         # make sure the particles stay inside of the canvas
         self.xyz[0] = np.clip(self.xyz[0], xlim[0], xlim[1])
         self.xyz[1] = np.clip(self.xyz[1], ylim[0], ylim[1])
@@ -122,26 +122,39 @@ class particle:
         self.scatter.set_ydata(self.xyz[1])
         self.scatter.set_3d_properties(self.xyz[2])
 
+
+def update_forces_from_wall(in_particle):
+
+    xpos_updated = in_particle.xyz[0] + in_particle.v[0]
+    if (xpos_updated < xlim[0] or xpos_updated > xlim[1]):
+        in_particle.v[0] = in_particle.v[0]*(-1)
+
+    ypos_updated = in_particle.xyz[1] + in_particle.v[1]
+    if (ypos_updated < ylim[0] or ypos_updated > ylim[1]):
+        in_particle.v[1] = in_particle.v[1]*(-1)
+
+    pass
+
 def update_position(in_particle = None, g = None):
     # update grid here
-    x = in_particle.xyz[0]
-    y = in_particle.xyz[1]
-    print(g[math.floor(x)][math.floor(y)])
-    print(in_particle)
+    x, y = in_particle.xyz[0], in_particle.xyz[1]
+    new_x, new_y = x + in_particle.v[0], y + in_particle.v[1]
+    x_floor, y_floor, new_x_floor, new_y_floor = math.floor(x), math.floor(y), math.floor(new_x), math.floor(new_y)
 
-    g[math.floor(x)][math.floor(y)].remove(in_particle)
-    new_x, new_y = x + in_particle.v[0]*TIME_STEP, y + in_particle.v[1]*TIME_STEP
+    if (not (in_particle in g[new_x_floor][new_y_floor])):
+        g[math.floor(x)][math.floor(y)].remove(in_particle)
+
+    
     # try:
-    g[math.floor(new_x)][math.floor(new_y)].append(in_particle)
-    print('updated')
-    quit()
+        g[math.floor(new_x)][math.floor(new_y)].append(in_particle)
+
         
     # except IndexError:
     #     print("x: " + str(math.floor(new_x)))
     #     print("y: " + str(math.floor(new_y)))
     #     print(g[new_x][new_y])
     in_particle.xyz[0] = new_x
-    in_particle[1] = new_y
+    in_particle.xyz[1] = new_y
 
     pass  
         
@@ -184,7 +197,7 @@ for i in np.arange(0,num_particles):
 
 grid = [[list() for y in range (ylim[0], ylim[1])] for x in range (xlim[0], xlim[1])] # for efficient computation
 fill_grid(g = grid, ep = particles)
-print(grid)
+
 ani = FuncAnimation(fig, update, frames=np.arange(0,0.5,delta_t), init_func=init, interval=10, blit=True, repeat=True)
 #ani.save('animation.gif', writer='imagemagick', fps=30) # will be huge for ORNL
 plt.show()
