@@ -39,17 +39,15 @@ size = 10
 colors = ['b', 'g', 'r', 'c', 'm', 'y']
 
 # inital view angles
-# elev = 30
-elev = 0
-# azim = 30
-azim = 90
+elev = 30
+azim = 30
 
 xlim = (0,size)
 ylim = (0,size)
 zlim = (0,size)
 
 # number of partitions in grid to zoom in on particle dynamics
-grid_partition = 1
+grid_partition = 2
 
 fig = plt.figure()
 ax = Axes3D(fig)
@@ -59,7 +57,6 @@ ax.set_ylim(ylim)
 ax.set_zlim(zlim)
 
 ax.view_init(elev, azim)
-ax.set_zlabel('Z-Axis')
 
 particles = [] # need to to set up as global
 grid = [] # need to set up as global 
@@ -140,20 +137,16 @@ def update_forces_from_wall(in_particle):
 
 def update_position(in_particle = None, g = None):
     # update grid here
-    x, y, z = in_particle.xyz[0], in_particle.xyz[1], in_particle.xyz[2]
-    new_x, new_y, new_z = x + in_particle.v[0], y + in_particle.v[1], z + in_particle.v[2]
-    x_floor, y_floor, z_floor, new_x_floor, new_y_floor, new_z_floor = (math.floor(x), math.floor(y), 
-        math.floor(z), math.floor(new_x), math.floor(new_y), math.floor(new_z))
+    x, y = in_particle.xyz[0], in_particle.xyz[1]
+    new_x, new_y = x + in_particle.v[0], y + in_particle.v[1]
+    x_floor, y_floor, new_x_floor, new_y_floor = math.floor(x), math.floor(y), math.floor(new_x), math.floor(new_y)
 
-    # working with x-z plane
-    print("new x floor: " + str(new_x_floor))
-    print("new z floor: " + str(new_z_floor) " original z "  + str(z))
-    if (not (in_particle in g[new_x_floor][new_z_floor])):
-        g[math.floor(x)][math.floor(z)].remove(in_particle)
+    if (not (in_particle in g[new_x_floor][new_y_floor])):
+        g[math.floor(x)][math.floor(y)].remove(in_particle)
 
     
     # try:
-        g[math.floor(new_x)][math.floor(new_z)].append(in_particle)
+        g[math.floor(new_x)][math.floor(new_y)].append(in_particle)
 
         
     # except IndexError:
@@ -162,16 +155,14 @@ def update_position(in_particle = None, g = None):
     #     print(g[new_x][new_y])
     in_particle.xyz[0] = new_x
     in_particle.xyz[1] = new_y
-    in_particle.xyz[2] = new_z
 
     pass  
         
 def fill_grid(g = None, ep = None):
-    # again, also in the x-z plane
     for p in ep:
         x = math.floor(p.xyz[0])
-        z = math.floor(p.xyz[2])
-        g[x][z].append(p)
+        y = math.floor(p.xyz[1])
+        g[x][y].append(p)
     pass
 
 def init():
@@ -187,8 +178,8 @@ def update(t):
     artists = [particle.scatter for particle in particles]
   
     # rotate view
-    # azim = azim + t/2
-    # ax.view_init(elev, azim)
+    azim = azim + t/2
+    ax.view_init(elev, azim)
     
     artists.append(ax)
 
@@ -200,10 +191,7 @@ for i in np.arange(0,num_particles):
     xyz = np.random.rand(1,3)[0]*size
     xyz[1] = 5 # for 2 dimensional dynamics
     v = np.random.rand(1,3)[0]*0.1
-    # v[1] = 0 # for 2 dimensional dynamics
-    print(v[0])
-    # v[2] = 1
-    # there will only be x-z dynamics.
+    v[1] = 0 # for 2 dimensional dynamics
     fmt = str(colors[np.random.randint(0,len(colors))] + 'o')
     particles.append(particle(xyz, v, fmt))
 
