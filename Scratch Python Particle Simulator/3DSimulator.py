@@ -59,6 +59,8 @@ ax.set_ylim(ylim)
 ax.set_zlim(zlim)
 
 ax.view_init(elev, azim)
+ax.set_xlabel('X-Axis')
+ax.set_ylabel('Y-Axis')
 ax.set_zlabel('Z-Axis')
 
 particles = [] # need to to set up as global
@@ -136,6 +138,10 @@ def update_forces_from_wall(in_particle):
     if (ypos_updated < ylim[0] or ypos_updated > ylim[1]):
         in_particle.v[1] = in_particle.v[1]*(-1)
 
+    zpos_updated = in_particle.xyz[2] + in_particle.v[2]
+    if (zpos_updated < zlim[0] or zpos_updated > zlim[1]):
+        in_particle.v[2] = in_particle.v[2]*(-1)
+
     pass
 
 def update_position(in_particle = None, g = None):
@@ -146,8 +152,6 @@ def update_position(in_particle = None, g = None):
         math.floor(z), math.floor(new_x), math.floor(new_y), math.floor(new_z))
 
     # working with x-z plane
-    print("new x floor: " + str(new_x_floor))
-    print("new z floor: " + str(new_z_floor) " original z "  + str(z))
     if (not (in_particle in g[new_x_floor][new_z_floor])):
         g[math.floor(x)][math.floor(z)].remove(in_particle)
 
@@ -201,7 +205,6 @@ for i in np.arange(0,num_particles):
     xyz[1] = 5 # for 2 dimensional dynamics
     v = np.random.rand(1,3)[0]*0.1
     # v[1] = 0 # for 2 dimensional dynamics
-    print(v[0])
     # v[2] = 1
     # there will only be x-z dynamics.
     fmt = str(colors[np.random.randint(0,len(colors))] + 'o')
@@ -213,8 +216,5 @@ fill_grid(g = grid, ep = particles)
 ani = FuncAnimation(fig, update, frames=np.arange(0,0.5,delta_t), init_func=init, interval=10, blit=True, repeat=True)
 #ani.save('animation.gif', writer='imagemagick', fps=30) # will be huge for ORNL
 plt.show()
-
-
-
 
 
