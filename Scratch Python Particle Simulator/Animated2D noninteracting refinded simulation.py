@@ -66,48 +66,23 @@ ax.set_zlabel('Z-Axis')
 particles = [] # need to to set up as global
 grid = [] # need to set up as global 
 class particle:
-    def __init__(self, xyz, v, fmt, radius = 0.1, mass = 1):
+    def __init__(self, xyz, v, fmt, radius = 0.1):
         self.xyz = np.array(xyz)
         self.v = np.array(v)
         self.radius = radius
-        self.mass = mass
 
         self.scatter, = ax.plot([], [], [], fmt, animated=True)
 
     def does_elastic_collision_occur(self):
         # here we will first check if there will be an elastic collision.
         # first we need to get all of the potential collisions from the grid. 
-# from other program
-        # particle_mat = self.get_influential_particles(g)
-        # if (not type(self) == FixedParticle):
 
-        #     for row in particle_mat:
-        #         for col in row:
-        #             for influential_particle in col:
-        #                 if ((not influential_particle == self) and type(influential_particle) == GasParticle):
-        #                     difference_x = self.pos[0] - influential_particle.pos[0]
-        #                     difference_y = self.pos[1] - influential_particle.pos[1]
-        #                     distance = (difference_x**2 + difference_y**2)**0.5 # willbe used for weighin calculations, simple pythag
-        #                     if (distance < self.radius + influential_particle.radius):
 
         return [False, None]
 
     def deal_with_elastic_collision(self, b):
+        return []
 
-        m1, m2 = p1.mass, p2.mass
-        M = m1 + m2
-        r1, r2 = p1.xyz, p2.xyz
-        d = np.linalg.norm(r1 - r2)**2
-        v1, v2 = p1.v, p2.v
-        u1 = v1 - 2*m2 / M * np.dot(v1-v2, r1-r2) / d * (r1 - r2)
-        u2 = v2 - 2*m1 / M * np.dot(v2-v1, r2-r1) / d * (r2 - r1)
-        p1.v = u1
-
-        p2.v = u2
-        if (not p1.v[1] == 5):
-            print("not supposed to happen")
-            quit()
-        pass
     def update(self, grid):
         # particle hits lower x wall 
         # if self.xyz[0] <= xlim[0]:
@@ -239,7 +214,7 @@ grid = [[list() for y in range (ylim[0], ylim[1])] for x in range (xlim[0], xlim
 fill_grid(g = grid, ep = particles)
 
 ani = FuncAnimation(fig, update, frames=np.arange(0,0.5,delta_t), init_func=init, interval=10, blit=True, repeat=True)
-# ani.save('animation.gif', writer='imagemagick', fps=30) # will be huge for ORNL
+#ani.save('animation.gif', writer='imagemagick', fps=30) # will be huge for ORNL
 plt.show()
 
 
