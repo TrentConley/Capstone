@@ -66,7 +66,7 @@ ax.set_zlabel('Z-Axis')
 particles = [] # need to to set up as global
 grid = [] # need to set up as global 
 class particle:
-    def __init__(self, xyz, v, fmt, radius = 0.1, mass = 1):
+    def __init__(self, xyz, v, fmt, radius = 0.5, mass = 1):
         self.xyz = np.array(xyz)
         self.v = np.array(v)
         self.radius = radius
@@ -74,37 +74,55 @@ class particle:
 
         self.scatter, = ax.plot([], [], [], fmt, animated=True)
 
-    def does_elastic_collision_occur(self):
+    def account_for_elastic_collisions(self, grid):
         # here we will first check if there will be an elastic collision.
         # first we need to get all of the potential collisions from the grid. 
 # from other program
-        # particle_mat = self.get_influential_particles(g)
+        # particle_mat = self.get_influential_particles(particle_mat)
+        particle_mat = grid
         # if (not type(self) == FixedParticle):
 
-        #     for row in particle_mat:
-        #         for col in row:
-        #             for influential_particle in col:
-        #                 if ((not influential_particle == self) and type(influential_particle) == GasParticle):
-        #                     difference_x = self.pos[0] - influential_particle.pos[0]
-        #                     difference_y = self.pos[1] - influential_particle.pos[1]
-        #                     distance = (difference_x**2 + difference_y**2)**0.5 # willbe used for weighin calculations, simple pythag
-        #                     if (distance < self.radius + influential_particle.radius):
+        for row in particle_mat:
+            for col in row:
+                for influential_particle in col:
+                    if (not influential_particle == self):
+                        difference_x = self.xyz[0] - influential_particle.xyz[0]
+                        difference_z = self.xyz[2] - influential_particle.xyz[2]
+                        distance = (difference_x**2 + difference_z**2)**0.5 # willbe used for weighin calculations, simple pythag
+                        if (distance < self.radius + influential_particle.radius and 
+                            (self.particles_are_getting_close(influential_particle, distance))):
+                            # increment distance must also be increasing
+                              self.deal_with_elastic_collision(influential_particle)
+        pass  
+        
+    def particles_are_getting_close(self, p2, dist):
+        
+        new_dif_x = self.xyz[0] + self.v[0] - (p2.xyz[0] + p2.v[0])
+        new_dif_z = self.xyz[2] + self.v[2] - (p2.xyz[2] + p2.v[2])
+        new_dist = (new_dif_x**2 + new_dif_x**2)**0.5
+        # return True
+        return dist > new_dist
 
-        return [False, None]
-
-    def deal_with_elastic_collision(self, b):
-
+    def deal_with_elastic_collision(self, p2):
+        
+        p1 = self
         m1, m2 = p1.mass, p2.mass
         M = m1 + m2
-        r1, r2 = p1.xyz, p2.xyz
+        r1, r2 = np.array((p1.xyz[0], p1.xyz[2])), np.array((p2.xyz[0], p2.xyz[2]))
         d = np.linalg.norm(r1 - r2)**2
-        v1, v2 = p1.v, p2.v
+        v1, v2 = np.array((p1.v[0], p1.v[2])), np.array((p2.v[0], p2.v[2]))
         u1 = v1 - 2*m2 / M * np.dot(v1-v2, r1-r2) / d * (r1 - r2)
         u2 = v2 - 2*m1 / M * np.dot(v2-v1, r2-r1) / d * (r2 - r1)
-        p1.v = u1
+        # print(u1)
+        # print(type(u1))
+        # print("")
+        # quit()
+        p1.v[0], p1.v[2] = u1[0], u1[1]
 
-        p2.v = u2
-        if (not p1.v[1] == 5):
+        p2.v[0], p2.v[2] = u2[0], u2[1]
+        if (not p1.v[1] == 0):
+            print("here is v1")
+            print(p1.v[1])
             print("not supposed to happen")
             quit()
         pass
@@ -132,13 +150,12 @@ class particle:
         # # particle hits upper z wall
         # elif self.xyz[2] >= zlim[1]:
         #     self.v[2] = - cor * np.abs(self.v[2])
-        update_forces_from_wall(self)
+        
         # changing velocity due to acceleration of gravity
         delta_v = delta_t * ag
         self.v += delta_v
-        collision_info = self.does_elastic_collision_occur()
-        if (collision_info[0]):
-            self.deal_with_elastic_collision(collision_info[1])
+        self.account_for_elastic_collisions(grid)
+        update_forces_from_wall(self)
         update_position(in_particle = self, g = grid)
 
 
@@ -229,7 +246,7 @@ for i in np.arange(0,num_particles):
     xyz = np.random.rand(1,3)[0]*size
     xyz[1] = 5 # for 2 dimensional dynamics
     v = np.random.rand(1,3)[0]*0.1
-    # v[1] = 0 # for 2 dimensional dynamics
+    v[1] = 0 # for 2 dimensional dynamics
     # v[2] = 1
     # there will only be x-z dynamics.
     fmt = str(colors[np.random.randint(0,len(colors))] + 'o')
