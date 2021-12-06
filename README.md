@@ -1,4 +1,6 @@
 # Capstone
 All work related to my Capstone Project
 
-Currently developing simulator from scratch, so see Scratch Python Particle Simulator for most current work
+Currently developing simulator from scratch, so see Python Simulator Developed from Scratch for most recent work
+
+See Capstone Documentation for screen recordings of simulations. 
